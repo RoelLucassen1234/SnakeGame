@@ -1,23 +1,26 @@
 package Logic;
 
+import Enum.Direction;
+import Enum.TileObject;
+import Interface.IMovement;
 import Interface.Iplayer;
 import Model.Edge;
 import Model.Graph;
-import Enum.*;
 import Model.Vertex;
 
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 
 public class AiLogic implements Iplayer {
 
     final private int totalGrids;
     final private int column;
+final  private  AiLogic opponent;
+
 
     private int source;
     private int destination;
+    private Timer timer;
+    private IMovement movement;
 
     private DijkstraLogic dijstra;
     private List<Vertex> nodes = new ArrayList<>();
@@ -27,6 +30,8 @@ public class AiLogic implements Iplayer {
     private boolean backwardsGrid = false;
     private boolean belowGrid = false;
     private boolean aboveGrid = false;
+
+    private Direction direction;
 
     private Random random;
     private Graph graph;
@@ -56,16 +61,27 @@ public class AiLogic implements Iplayer {
         return column;
     }
 
+    public Direction getDirection() {
+        return direction;
+    }
+
+    @Override
+    public void setCurrentSpawn(int currentSpawn) {
+        source = currentSpawn;
+    }
 
 
     //MAG NIET DE MAP AANMAKEN
-    public AiLogic(int totalGrids, int column, List<Vertex> nodes) {
+    public AiLogic(int totalGrids, int column, List<Vertex> nodes, int spawnpoint, IMovement boardInformation) {
         this.totalGrids = totalGrids;
         this.column = column;
         this.random = new Random();
         this.nodes = nodes;
         setEdges(this.column);
         graph = new Graph(this.nodes, this.edges);
+        setSpawnPoint(spawnpoint);
+        this.movement = boardInformation;
+        opponent = this;
 
 
     }
@@ -134,11 +150,11 @@ public class AiLogic implements Iplayer {
 
     }
 
-    private int calculateWeight(int gridId){
+    private int calculateWeight(int gridId) {
         int weight = 1;
 
-        if (nodes.get(gridId).getStatus() == TileObject.POWERUP){
-            switch (nodes.get(gridId).getPowerUpType()){
+        if (nodes.get(gridId).getStatus() == TileObject.POWERUP) {
+            switch (nodes.get(gridId).getPowerUpType()) {
                 case HOSTILE:
                     weight = -1;
                     break;
@@ -158,20 +174,69 @@ public class AiLogic implements Iplayer {
 
     }
 
-    public List<Vertex> calculatePath(){
+    public List<Vertex> calculatePath() {
         long startTime = System.currentTimeMillis();
 
         dijstra = new DijkstraLogic(graph);
         dijstra.execute(nodes.get(source));
         LinkedList<Vertex> path = dijstra.getPath(nodes.get(destination));
 
-//        for (Vertex vertex: path ) {
-//            System.out.println(vertex.getName());
-//        }
+        for (Vertex vertex: path ) {
+            System.out.println(vertex.getName());
+        }
         long endTime = System.currentTimeMillis();
         long duration = ((endTime - startTime));
-        System.out.println(duration + " ms");
+        //System.out.println(duration + " ms");
         return path;
     }
 
+    @Override
+    public void setSpawnPoint(int spawnPoint) {
+        source = spawnPoint;
+    }
+
+    @Override
+    public int getSpawnPoint() {
+        return source;
+    }
+
+    @Override
+    public int getCurrentLocation() {
+        return source;
+    }
+
+    public void startGame() {
+        timer = new Timer();
+        timer.scheduleAtFixedRate(new TimerTask() {
+            @Override
+            public void run() {
+destination = movement.getPlayer().getCurrentLocation();
+
+                int destinationId = -1;
+                List<Vertex> vertexList = calculatePath();
+                if (vertexList.size() > 1) {
+                  destinationId = vertexList.get(1).getIdNumber();
+
+                    if (source + 1 == destinationId){
+                        direction = Direction.RIGHT;
+                    }else if (source - 1 == destinationId){
+                        direction = Direction.LEFT;
+                    }else if(source - column == destinationId){
+                        direction = Direction.UP;
+                    }else if (source + column == destinationId ){
+                        direction = Direction.DOWN;
+                    }
+                }
+                System.out.println("Source =" + source + "||||" + destinationId);
+
+                System.out.println(direction.toString());
+                movement.move(opponent);
+            }
+        }, 200, 400);
+    }
+
+    public void endGame() {
+        timer.cancel();
+        timer.purge();
+    }
 }
