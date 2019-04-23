@@ -3,7 +3,7 @@ package Logic;
 import Interface.Iplayer;
 import Model.Edge;
 import Model.Graph;
-import Model.TileObject;
+import Enum.*;
 import Model.Vertex;
 
 import java.util.ArrayList;

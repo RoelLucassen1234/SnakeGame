@@ -6,10 +6,17 @@ public class GameClient {
     private Iplayer player;
     private Iplayer opponent;
 
-    public GameClient(boolean singlePlayer){
+    private MapLogic map;
+
+    public GameClient(boolean singlePlayer, int column1, int column2){
         if (singlePlayer){
+            map = new MapLogic((column1 * column2), column1);
             player = new PlayerLogic();
-            opponent = new AiLogic(10,10,null);
+            opponent = new AiLogic((column1 * column2),column1,map.getMap());
         }
     }
+
+
+
+
 }

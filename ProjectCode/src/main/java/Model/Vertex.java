@@ -1,6 +1,6 @@
 package Model;
 
-import poweruplogic.*;
+import Enum.*;
 
 import java.util.Random;
 
