@@ -6,14 +6,29 @@ import java.util.Random;
 
 public class Vertex {
     final private String id;
+
+    public PowerUp getPowerUp() {
+        return powerUp;
+    }
+
     private TileObject status;
     private PowerUp powerUp;
+
+    public int getTouchedBy() {
+        return touchedBy;
+    }
+
+    public void setTouchedBy(int touchedBy) {
+        this.touchedBy = touchedBy;
+    }
+
+    private int touchedBy;
     final private int idNumber;
     final private String name;
 
 
     public TileObject getStatus() {
-        return status;
+        return this.status;
     }
     public void setStatus(TileObject status) {
         this.status = status;
@@ -27,6 +42,7 @@ public class Vertex {
         this.name = name;
         this.idNumber = idnumber;
         this.status = object;
+        touchedBy = 88;
 
         if (this.status == TileObject.POWERUP){
             Random random = new Random();

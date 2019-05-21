@@ -34,12 +34,13 @@ public class MapLogic {
     }
 
     private void createMap() {
+
         TileObject object;
         for (int i = 0; i < totalGrids; i++) {
-            if (this.random.nextInt(6) == 2)
-                object = TileObject.WALL;
-            else if (this.random.nextInt(100) == 2)
-                object = TileObject.POWERUP;
+                if (this.random.nextInt(8) == 9999)
+                    object = TileObject.WALL;
+                else if (this.random.nextInt(5) == 2)
+                    object = TileObject.POWERUP;
             else
                 object = TileObject.WALKABLE;
 
@@ -55,5 +56,10 @@ public class MapLogic {
     public Vertex getSpecificNode(int number){
       List<Vertex> node = nodes.stream().filter(vertex -> vertex.getIdNumber() == number).collect(Collectors.toList());
       return node.get(0);
+    }
+
+    public List<Vertex> getAllNodesTouchedByPlayer(int Playernumber){
+        System.out.println(Playernumber);
+       return nodes.stream().filter(vertex -> vertex.getTouchedBy() == Playernumber).collect(Collectors.toList());
     }
 }

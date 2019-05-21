@@ -1,6 +1,7 @@
 package Model;
 
 import Enum.*;
+import Interface.Iplayer;
 
 public class ReverseBoost extends PowerUp {
 
@@ -10,7 +11,7 @@ public class ReverseBoost extends PowerUp {
     }
 
     @Override
-    public void update(){
-
+    public void update(Iplayer iplayer){
+        iplayer.setSpeed(100);
     }
 }

@@ -7,13 +7,16 @@ import Model.Vertex;
 import javafx.application.Application;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
+import javafx.event.EventHandler;
 import javafx.scene.Node;
 import javafx.scene.Scene;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.stage.Stage;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class Main extends Application implements IGridMain {
@@ -26,9 +29,10 @@ public class Main extends Application implements IGridMain {
     @Override
     public void start(Stage primaryStage) throws Exception {
 
-        numCols = 20;
-        int numRows = 20;
+        numCols = 50;
+        int numRows = 50;
 
+        ArrayList<String> input = new ArrayList<>();
         client = new GameClient(true, numCols, numRows, this);
 
         BooleanProperty[][] switches = new BooleanProperty[numCols][numRows];
@@ -47,6 +51,16 @@ public class Main extends Application implements IGridMain {
         Scene scene = new Scene(root, 1000, 1000);
         scene.getStylesheets().add("grid-with-borders.css");
         primaryStage.setScene(scene);
+
+
+        scene.setOnKeyPressed(new EventHandler<KeyEvent>() {
+            @Override
+            public void handle(KeyEvent keyEvent) {
+                client.changePlayerDirection(keyEvent.getCode().toString());
+            }
+        });
+
+
         primaryStage.show();
 
     }
@@ -132,14 +146,27 @@ public class Main extends Application implements IGridMain {
         return grid;
     }
 
-    public void showPath(Vertex vertex) {
+    public void showPath(Vertex vertex, String color) {
         int x = (int) Math.floor((double) vertex.getIdNumber() / numCols);
 
         int y = vertex.getIdNumber() - (x * numCols);
         for (Node node : grid.getChildren()) {
             if (GridPane.getColumnIndex(node) == y && GridPane.getRowIndex(node) == x) {
                 System.out.println(x + " " + y);
-                node.setStyle("-fx-background-color:#FFFF00;");
+                node.setStyle("-fx-background-color:#" + color);
+            }
+        }
+    }
+
+    public void removeTerritory(List<Vertex> nodes){
+        for (Vertex node: nodes) {
+            int x = (int) Math.floor((double) node.getIdNumber() / numCols);
+            int y = node.getIdNumber() - (x * numCols);
+
+            for (Node gridChild : grid.getChildren()) {
+                if (GridPane.getColumnIndex(gridChild) == y && GridPane.getRowIndex(gridChild) == x) {
+                    gridChild.setStyle("-fx-background-color:#" + "FFFFFF");
+                }
             }
         }
     }

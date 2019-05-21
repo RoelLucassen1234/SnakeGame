@@ -2,7 +2,7 @@ package Logic;
 
 import Enum.Direction;
 import Enum.TileObject;
-import Interface.IMovement;
+import Interface.IGameClient;
 import Interface.Iplayer;
 import Model.Edge;
 import Model.Graph;
@@ -14,13 +14,20 @@ public class AiLogic implements Iplayer {
 
     final private int totalGrids;
     final private int column;
-final  private  AiLogic opponent;
+    private int movementspeed= 200;
+    final private AiLogic opponent;
+
+    public String getColor() {
+        return color;
+    }
+
+    final private String color = "ff0000";
 
 
     private int source;
     private int destination;
     private Timer timer;
-    private IMovement movement;
+    private IGameClient movement;
 
     private DijkstraLogic dijstra;
     private List<Vertex> nodes = new ArrayList<>();
@@ -66,13 +73,18 @@ final  private  AiLogic opponent;
     }
 
     @Override
+    public void setDirection(Direction direction) {
+        this.direction = direction;
+    }
+
+    @Override
     public void setCurrentSpawn(int currentSpawn) {
         source = currentSpawn;
     }
 
 
     //MAG NIET DE MAP AANMAKEN
-    public AiLogic(int totalGrids, int column, List<Vertex> nodes, int spawnpoint, IMovement boardInformation) {
+    public AiLogic(int totalGrids, int column, List<Vertex> nodes, int spawnpoint, IGameClient boardInformation) {
         this.totalGrids = totalGrids;
         this.column = column;
         this.random = new Random();
@@ -100,8 +112,11 @@ final  private  AiLogic opponent;
                 forwardGrid = true;
 
             if (i + 1 < totalGrids)
-                if (nodes.get(i + 1).getStatus() == TileObject.WALL)
+                if (nodes.get(i + 1).getStatus() == TileObject.WALL )
                     forwardGrid = true;
+                else if(nodes.get(i + 1).getStatus() == TileObject.TERRITORY){
+                    forwardGrid = true;
+                }
 
             if (i + column > totalGrids || i + column >= totalGrids)
                 belowGrid = true;
@@ -109,14 +124,20 @@ final  private  AiLogic opponent;
             if (i + column < totalGrids)
                 if (nodes.get(i + column).getStatus() == TileObject.WALL)
                     belowGrid = true;
+                else if(nodes.get(i + column).getStatus() == TileObject.TERRITORY) {
+                    belowGrid = true;
+                }
 
 
             if (i % column == 0 || i == 0)
                 backwardsGrid = true;
 
             if (i - 1 > 0 && i % column != 0)
-                if (nodes.get(i - 1).getStatus() == TileObject.WALL)
+                if (nodes.get(i - 1).getStatus() == TileObject.WALL )
                     backwardsGrid = true;
+                else if( nodes.get(i - 1).getStatus() == TileObject.TERRITORY) {
+                    forwardGrid = true;
+                }
 
             if (i - column < 0)
                 aboveGrid = true;
@@ -124,14 +145,15 @@ final  private  AiLogic opponent;
             if (i - column > 0)
                 if (nodes.get(i - column).getStatus() == TileObject.WALL)
                     aboveGrid = true;
+                else if(nodes.get(i - column).getStatus() == TileObject.TERRITORY) {
+                    forwardGrid = true;
+                }
 
 
             if (!forwardGrid) {
-
                 addLane("Lane" + i, i, i + 1, calculateWeight(i + 1));
             }
             if (!belowGrid) {
-
                 addLane("Lane" + i, i, i + column, calculateWeight(i + column));
             }
             if (!backwardsGrid) {
@@ -169,23 +191,23 @@ final  private  AiLogic opponent;
                     break;
             }
         }
-
         return weight;
-
     }
 
     public List<Vertex> calculatePath() {
-        long startTime = System.currentTimeMillis();
+        //long startTime = System.currentTimeMillis();
 
+
+        setEdges(this.column);
+        graph = new Graph(this.nodes, this.edges);
         dijstra = new DijkstraLogic(graph);
         dijstra.execute(nodes.get(source));
+        destination = movement.getPlayer().getCurrentLocation();
         LinkedList<Vertex> path = dijstra.getPath(nodes.get(destination));
+        edges.clear();
 
-        for (Vertex vertex: path ) {
-            System.out.println(vertex.getName());
-        }
         long endTime = System.currentTimeMillis();
-        long duration = ((endTime - startTime));
+       // long duration = ((endTime - startTime));
         //System.out.println(duration + " ms");
         return path;
     }
@@ -210,29 +232,53 @@ final  private  AiLogic opponent;
         timer.scheduleAtFixedRate(new TimerTask() {
             @Override
             public void run() {
-destination = movement.getPlayer().getCurrentLocation();
 
+
+                destination = movement.getPlayer().getCurrentLocation();
                 int destinationId = -1;
                 List<Vertex> vertexList = calculatePath();
-                if (vertexList.size() > 1) {
-                  destinationId = vertexList.get(1).getIdNumber();
+                if (vertexList.get(1) != null) {
+                    if (vertexList.size() > 1) {
+                        destinationId = vertexList.get(1).getIdNumber();
 
-                    if (source + 1 == destinationId){
-                        direction = Direction.RIGHT;
-                    }else if (source - 1 == destinationId){
-                        direction = Direction.LEFT;
-                    }else if(source - column == destinationId){
-                        direction = Direction.UP;
-                    }else if (source + column == destinationId ){
-                        direction = Direction.DOWN;
+                        if (source + 1 == destinationId) {
+                            direction = Direction.RIGHT;
+                        } else if (source - 1 == destinationId) {
+                            direction = Direction.LEFT;
+                        } else if (source - column == destinationId) {
+                            direction = Direction.UP;
+                        } else if (source + column == destinationId) {
+                            direction = Direction.DOWN;
+                        }
                     }
-                }
-                System.out.println("Source =" + source + "||||" + destinationId);
 
-                System.out.println(direction.toString());
-                movement.move(opponent);
+
+                    movement.move(opponent);
+                }
             }
-        }, 200, 400);
+        }, 200, movementspeed);
+    }
+
+    @Override
+    public String colorReturn() {
+        return getColor();
+    }
+
+    @Override
+    public void setSpeed(int speed) {
+        endGame();
+        movementspeed = speed;
+        startGame();
+    }
+
+    @Override
+    public int getPlayerNumber() {
+        return 1;
+    }
+
+    @Override
+    public void playerDies() {
+endGame();
     }
 
     public void endGame() {

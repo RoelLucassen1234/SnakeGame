@@ -2,6 +2,7 @@ package Model;
 
 import java.util.Random;
 import Enum.*;
+import Interface.Iplayer;
 
 public class SpeedBoost extends PowerUp {
 
@@ -19,7 +20,8 @@ public class SpeedBoost extends PowerUp {
     }
 
     @Override
-    public void update(){
+    public void update(Iplayer iplayer){
+        iplayer.setSpeed(100);
 
     }
 }

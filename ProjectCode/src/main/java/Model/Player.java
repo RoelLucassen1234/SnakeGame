@@ -4,13 +4,32 @@ public class Player {
     private int playerNumber;
     private int spawnPoint;
     private int currentPoint;
-    private Direction direction;
 
+    public int getLives() {
+        return lives;
+    }
+
+    private int lives;
+    private Direction direction;
+    private String color = "FFFF00";
+
+    public void setPlayerNumber(int playerNumber) {
+        this.playerNumber = playerNumber;
+    }
+
+    public int getPlayerNumber() {
+        return playerNumber;
+    }
+
+    public String getColor() {
+        return color;
+    }
 
     public Player(int playerNumber){
         this.playerNumber = playerNumber;
         spawnPoint = -1;
         direction = Direction.DOWN;
+        lives = 3;
     }
     public int getCurrentPoint() {
         return currentPoint;
@@ -34,5 +53,9 @@ public class Player {
 
     public int getSpawnPoint(){
         return this.spawnPoint;
+    }
+
+    public void removeLife(){
+        lives--;
     }
 }
