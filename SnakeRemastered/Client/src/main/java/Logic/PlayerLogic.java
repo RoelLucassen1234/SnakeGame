@@ -83,7 +83,7 @@ public class PlayerLogic implements Iplayer {
             public void run() {
                 movement.move(playerInfo);
             }
-        }, 200, movementspeed);
+        }, 400, movementspeed);
     }
 
     @Override

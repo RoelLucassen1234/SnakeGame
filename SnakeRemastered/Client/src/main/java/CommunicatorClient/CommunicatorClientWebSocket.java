@@ -38,7 +38,7 @@ public class CommunicatorClientWebSocket extends Communicator {
      * The local websocket uri to connect to.
      */
 
-    private static final String uri = "ws://192.168.222.8:8097/communicator/";
+    private static final String uri = "ws://145.93.97.53:8097/communicator/";
 
     private Session session;
 

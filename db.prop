@@ -1,0 +1,5 @@
+#Tue Mar 12 12:02:44 CET 2019
+jdbc.password=
+jdbc.username=
+jdbc.url=jdbc\:sqlite\:databaseSnake.db
+jdbc.drivers=org.sqlite.JDBC

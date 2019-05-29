@@ -256,7 +256,7 @@ public class AiLogic implements Iplayer {
                     movement.move(opponent);
                 }
             }
-        }, 200, movementspeed);
+        }, 500, movementspeed);
     }
 
     @Override

@@ -22,7 +22,7 @@ public class SpeedBoost extends PowerUp {
 
     @Override
     public void update(Iplayer iplayer){
-        iplayer.setSpeed(230);
+        iplayer.setSpeed(300);
 
     }
 }

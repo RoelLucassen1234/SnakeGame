@@ -17,12 +17,15 @@
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <module name="Client" />
+        <module name="SnakeRestServer" />
         <module name="WebSockets" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
       <module name="Client" target="11" />
+      <module name="REST" target="11" />
       <module name="SnakeRemastered" target="11" />
+      <module name="SnakeRestServer" target="11" />
       <module name="WebSockets" target="11" />
     </bytecodeTargetLevel>
   </component>

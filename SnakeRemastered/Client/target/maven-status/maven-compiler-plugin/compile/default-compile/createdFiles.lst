@@ -9,6 +9,7 @@ Logic\MapLogic.class
 Logic\AiLogic$1.class
 Logic\PlayerLogic$2.class
 Interface\IGridMain.class
+sample\main2.class
 Models\CommunicatorWebSocketMessage.class
 Models\Edge.class
 Enum\PowerUpType.class
@@ -37,4 +38,5 @@ Interface\Iplayer.class
 Models\SwitchBoost.class
 CommunicatorClient\CommunicatorClientWebSocket.class
 Models\Graph.class
+Models\Position.class
 Logic\AiLogic$2.class
