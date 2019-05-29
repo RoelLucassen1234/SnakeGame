@@ -1,9 +1,9 @@
 package controller;
 
+import Models.GameResult;
+import Models.PlayerScore;
+import Models.User;
 import restLogic.ScoreLogic;
-import restModel.GameResult;
-import restModel.PlayerScore;
-import restModel.User;
 import restServer.RestResponseHelper;
 
 import javax.ws.rs.GET;

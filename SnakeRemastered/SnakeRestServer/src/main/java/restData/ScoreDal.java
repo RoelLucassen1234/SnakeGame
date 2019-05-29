@@ -1,8 +1,8 @@
 package restData;
 
-import restModel.GameResult;
-import restModel.PlayerScore;
-import restModel.User;
+import Models.GameResult;
+import Models.PlayerScore;
+import Models.User;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -17,8 +17,9 @@ public class ScoreDal {
     public boolean create(GameResult user) {
         try {
 
+            //TODO MAAK DE STATEMENT CORRECT!!!!!
             sqlConnector.open();
-            PreparedStatement statement = sqlConnector.getStatement("INSERT INTO score (userId,win)" + " VALUES ('" + user.getPlayerNr() + "','" + user.isWin() + "')");
+            PreparedStatement statement = sqlConnector.getStatement("INSERT INTO score (userId,win)" + " VALUES ('" + user.getUsername() + "','" + user.isWin() + "')");
             sqlConnector.executeUpdate(statement);
 
         } catch (Exception ex) {

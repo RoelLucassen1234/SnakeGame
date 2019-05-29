@@ -1,4 +1,4 @@
-package restModel;
+package Models;
 
 public class PlayerScore {
     int playerWins;

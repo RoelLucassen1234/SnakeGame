@@ -1,5 +1,7 @@
 package loginClient;
 
+import Models.SnakeRestResponse;
+import Models.User;
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
 import org.apache.http.HttpEntity;
@@ -14,8 +16,6 @@ import org.apache.http.impl.client.HttpClients;
 import org.apache.http.util.EntityUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import restModel.User;
-import restServer.SnakeRestResponse;
 
 import java.io.IOException;
 
@@ -23,13 +23,13 @@ import java.io.IOException;
 public class SnakeLoginClient {
     private final Logger log = LoggerFactory.getLogger(SnakeLoginClient.class);
 
-    private static final String url = "http://145.93.97.53:8090/user";
+    private static final String url = "http://localhost:8090/user";
 
     private final Gson gson = new Gson();
 
     private static SnakeLoginClient instance;
 
-    private SnakeLoginClient() {
+    public SnakeLoginClient() {
 
     }
 
@@ -39,7 +39,7 @@ public class SnakeLoginClient {
         }
         return instance;
     }
-    private SnakeRestResponse executeQueryPost(User userRequest, String queryPost) {
+    public SnakeRestResponse executeQueryPost(User userRequest, String queryPost) {
 
         // Build the query for the REST service
         final String query = url + queryPost;
@@ -54,7 +54,7 @@ public class SnakeLoginClient {
         request.setEntity(params);
         return executeHttpUriRequest(request);
     }
-    private SnakeRestResponse executeQueryGet(String queryGet) {
+    public SnakeRestResponse executeQueryGet(String queryGet) {
 
         // Build the query for the REST service
         final String query = url + queryGet;
@@ -63,6 +63,14 @@ public class SnakeLoginClient {
         // Execute the HTTP GET request
         HttpGet httpGet = new HttpGet(query);
         return executeHttpUriRequest(httpGet);
+    }
+
+
+    public User login(String username, String password) {
+        User userRequest = new User(username, password);
+        String queryPost = "/login";
+        SnakeRestResponse response = executeQueryPost(userRequest, queryPost);
+        return response.getUser();
     }
 
     private SnakeRestResponse executeHttpUriRequest(HttpUriRequest httpUriRequest) {

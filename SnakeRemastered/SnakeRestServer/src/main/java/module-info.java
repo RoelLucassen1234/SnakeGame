@@ -1,10 +1,14 @@
 module SnakeRestServer {
     requires slf4j.api;
     requires gson;
-    requires java.ws.rs;
-    requires jetty.servlet;
     requires jetty.server;
+    requires jetty.servlet;
     requires jersey.container.servlet.core;
-    exports restModel;
-    exports restServer;
+    requires java.ws.rs;
+    requires java.xml.bind;
+    requires java.sql;
+    requires Client;
+
+    opens restServer;
+    opens controller;
 }

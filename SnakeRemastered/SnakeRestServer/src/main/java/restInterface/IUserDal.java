@@ -1,6 +1,6 @@
 package restInterface;
 
-import restModel.User;
+import Models.User;
 
 public interface IUserDal {
     boolean create(User user);

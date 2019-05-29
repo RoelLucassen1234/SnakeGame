@@ -1,9 +1,9 @@
 package restLogic;
 
 
+import Models.User;
 import restData.UserDal;
 import restInterface.IUserDal;
-import restModel.User;
 
 public class UserLogic {
 

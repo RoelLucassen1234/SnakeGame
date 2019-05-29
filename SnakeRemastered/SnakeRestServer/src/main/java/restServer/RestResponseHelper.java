@@ -1,11 +1,12 @@
 package restServer;
 
+import Models.PlayerScore;
+import Models.SnakeRestResponse;
+import Models.User;
 import com.google.gson.Gson;
 import controller.UserController;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import restModel.PlayerScore;
-import restModel.User;
 
 public class RestResponseHelper {
 
@@ -32,6 +33,7 @@ public class RestResponseHelper {
 
     public static String getUser(User user){
         SnakeRestResponse response = new SnakeRestResponse();
+        response.setSuccess(true);
         response.setUser(user);
         String output = gson.toJson(response);
         log.info("[Server response] {}", output);

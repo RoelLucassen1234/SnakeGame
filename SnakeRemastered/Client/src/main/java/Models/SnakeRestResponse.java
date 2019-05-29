@@ -1,7 +1,4 @@
-package restServer;
-
-import restModel.PlayerScore;
-import restModel.User;
+package Models;
 
 public class SnakeRestResponse {
 

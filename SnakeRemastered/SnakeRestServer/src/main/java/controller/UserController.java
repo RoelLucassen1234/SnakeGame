@@ -1,11 +1,10 @@
 package controller;
 
 
+import Models.User;
 import restLogic.UserLogic;
-import restModel.User;
 import restServer.RestResponseHelper;
 
-import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
@@ -29,16 +28,16 @@ public class UserController {
         }
     }
 
-    @GET
-    @Path("/user")
+    @POST
+    @Path("/login")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getUser(User user) {
+    public Response Login(User user) {
 
         System.out.println("[Server getUser]");
         if (userLogic.login(user.getUsername(), user.getPassword())){
             return Response.status(200).entity(RestResponseHelper.getUser(user)).build();
         }else{
-            return Response.status(200).entity(RestResponseHelper.getSuccessResponse(false)).build();
+            return Response.status(400).entity(RestResponseHelper.getSuccessResponse(false)).build();
         }
 
     }

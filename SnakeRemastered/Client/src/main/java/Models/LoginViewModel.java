@@ -1,15 +1,8 @@
-package restModel;
+package Models;
 
-public class User {
+public class LoginViewModel {
     private String username;
-
-    public User(String username, String password) {
-        this.username = username;
-        this.password = password;
-    }
-    public User(){
-
-    }
+    private String password;
 
     public String getUsername() {
         return username;
@@ -26,6 +19,4 @@ public class User {
     public void setPassword(String password) {
         this.password = password;
     }
-
-    private String password;
 }

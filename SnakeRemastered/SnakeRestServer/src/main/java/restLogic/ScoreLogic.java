@@ -1,9 +1,9 @@
 package restLogic;
 
+import Models.GameResult;
+import Models.PlayerScore;
+import Models.User;
 import restData.ScoreDal;
-import restModel.GameResult;
-import restModel.PlayerScore;
-import restModel.User;
 
 public class ScoreLogic {
     private ScoreDal iScoreDal;
