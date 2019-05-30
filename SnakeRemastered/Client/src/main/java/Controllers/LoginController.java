@@ -35,7 +35,7 @@ public class LoginController {
         User user = client.login(tbUsername.getText(), tbPassword.getText());
         if (user != null)
 System.out.println("It Works");
-        
+
 
     }
 

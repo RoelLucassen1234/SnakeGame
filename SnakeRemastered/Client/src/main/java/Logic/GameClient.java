@@ -6,6 +6,7 @@ import Enum.GamePhase;
 import Enum.TileObject;
 import Interface.IGameClient;
 import Interface.IGridMain;
+import Interface.IPlayerLogic;
 import Interface.Iplayer;
 import Models.Vertex;
 
@@ -14,7 +15,7 @@ import java.util.Random;
 import java.util.stream.Collectors;
 
 public class GameClient implements IGameClient {
-    private Iplayer player;
+    private IPlayerLogic player;
     private Iplayer opponent;
 
     private GamePhase phase;
@@ -35,15 +36,25 @@ public class GameClient implements IGameClient {
         this.singlePlayer = singlePlayer;
         player = new PlayerLogic(random.nextInt(10000), this);
         if (singlePlayer) {
-            map = new MapLogic((column1 * column2), column1);
+            map = new MapLogic((column1 * column2), column1, false);
             boardMap = main;
             phase = GamePhase.PREPERATION;
         } else {
             clientObserver = new CommunicatorClientObserver(this);
-            map = new MapLogic((column1 * column2), column1);
+            map = new MapLogic((column1 * column2), column1, false);
             boardMap = main;
             phase = GamePhase.PREPERATION;
 
+        }
+    }
+
+    public GameClient(boolean singlePlayer, int column1, int column2, IGridMain main, boolean test) {
+        this.singlePlayer = singlePlayer;
+        player = new PlayerLogic(100, this);
+        if (singlePlayer) {
+            map = new MapLogic((column1 * column2), column1, test);
+            boardMap = main;
+            phase = GamePhase.PREPERATION;
         }
     }
 
@@ -80,8 +91,8 @@ public class GameClient implements IGameClient {
             opponent = new AiLogic(map.getTotalGrids(), map.getColumn(), map.getNodes(), vertex.getIdNumber(), this);
             ((AiLogic) opponent).startGame();
             player.startGame();
-        }else if (!singlePlayer){
-        player.startGame();
+        } else if (!singlePlayer) {
+            player.startGame();
         }
         phase = GamePhase.ONGOING;
     }
@@ -108,25 +119,29 @@ public class GameClient implements IGameClient {
                 break;
         }
 
+        {
+            if (node.getStatus() == TileObject.TERRITORY || node.getStatus() == TileObject.WALL) {
+                player.playerDies();
+                if (boardMap != null)
+                boardMap.removeTerritory(map.getAllNodesTouchedByPlayer(player.getPlayerNumber()));
 
-        if (node.getStatus() == TileObject.TERRITORY || node.getStatus() == TileObject.WALL) {
-            player.playerDies();
-            boardMap.removeTerritory(map.getAllNodesTouchedByPlayer(player.getPlayerNumber()));
-            if (!singlePlayer) {
+                if (!singlePlayer) {
 
-            }
-        } else {
-            map.getSpecificNode(player.getCurrentLocation()).setStatus(TileObject.WALL);
-            player.setCurrentSpawn(node.getIdNumber());
-            node.setTouchedBy(player.getPlayerNumber());
-            boardMap.showPath(node, player.colorReturn());
+                }
+            } else {
+                map.getSpecificNode(player.getCurrentLocation()).setStatus(TileObject.WALL);
+                player.setCurrentSpawn(node.getIdNumber());
+                node.setTouchedBy(player.getPlayerNumber());
+                if (boardMap != null)
+                boardMap.showPath(node, player.colorReturn());
 
-            if (!singlePlayer) {
-            clientObserver.sendPosition(player.getPlayerNumber(), node.getIdNumber());
-            }
+                if (!singlePlayer) {
+                    clientObserver.sendPosition(player.getPlayerNumber(), node.getIdNumber());
+                }
 
-            if (node.getStatus() == TileObject.POWERUP) {
-                node.getPowerUp().update(player);
+                if (node.getStatus() == TileObject.POWERUP) {
+                    node.getPowerUp().update(player);
+                }
             }
         }
     }
@@ -175,7 +190,7 @@ public class GameClient implements IGameClient {
         if (player.getPlayerNumber() != playerNumber)
             opponentReady = true;
         if (player.getReady() && opponentReady) {
-           startGame();
+            startGame();
         }
     }
 
@@ -186,5 +201,9 @@ public class GameClient implements IGameClient {
             vertex.setStatus(TileObject.WALL);
             boardMap.drawPositionOpponent(position);
         }
+    }
+
+    public Iplayer getPlayerLogic() {
+        return player;
     }
 }

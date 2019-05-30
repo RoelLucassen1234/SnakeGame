@@ -9,13 +9,7 @@ import java.util.Random;
 import java.util.stream.Collectors;
 
 public class MapLogic {
-    public int getTotalGrids() {
-        return totalGrids;
-    }
 
-    public int getColumn() {
-        return column;
-    }
 
     private final int totalGrids;
     private final int column;
@@ -27,27 +21,55 @@ public class MapLogic {
 
 
 
-    public MapLogic(int maxSize, int column) {
+    public MapLogic(int maxSize, int column,boolean test) {
         this.totalGrids = maxSize;
         this.column = column;
         this.random = new Random(0);
-        createMap();
+        createMap(test);
     }
 
-    private void createMap() {
+    public int getTotalGrids() {
+        return totalGrids;
+    }
+
+    public int getColumn() {
+        return column;
+    }
+
+    public void createMap(boolean test) {
 
         TileObject object;
-        for (int i = 0; i < totalGrids; i++) {
+
+        if (!test) {
+            for (int i = 0; i < totalGrids; i++) {
                 if (this.random.nextInt(8) == 33)
                     object = TileObject.WALL;
                 else if (this.random.nextInt(40) == 2)
                     object = TileObject.POWERUP;
-            else
-                object = TileObject.WALKABLE;
+                else
+                    object = TileObject.WALKABLE;
 
-            Vertex location = new Vertex("Node_" + i, "Node_" + i, i, object);
-            nodes.add(location);
+                addGrid(i, object);
+
+            }
+        }else {
+            for (int i = 0; i < totalGrids; i++) {
+                if (i % 4 == 0)
+                    object = TileObject.WALL;
+                else if (i % 21 == 0)
+                    object = TileObject.POWERUP;
+                else
+                    object = TileObject.WALKABLE;
+
+                addGrid(i, object);
+            }
         }
+
+    }
+
+    private void addGrid(int i, TileObject object) {
+        Vertex location = new Vertex("Node_" + i, "Node_" + i, i, object);
+        nodes.add(location);
     }
 
     public List<Vertex> getMap() {

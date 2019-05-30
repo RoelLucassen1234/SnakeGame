@@ -281,15 +281,7 @@ public class AiLogic implements Iplayer {
 endGame();
     }
 
-    @Override
-    public void setReady(boolean ready) {
 
-    }
-
-    @Override
-    public boolean getReady() {
-        return false;
-    }
 
     public void endGame() {
         timer.cancel();
