@@ -12,6 +12,6 @@
       <Button id="loginButton" fx:id="btnLogin" layoutX="253.0" layoutY="235.0" mnemonicParsing="false" onAction="#logInClick" prefHeight="25.0" prefWidth="88.0" text="Login" />
       <TextField id="tbUsername" fx:id="tbUsername" layoutX="222.0" layoutY="135.0" />
       <TextField id="tbPassword" fx:id="tbPassword" layoutX="222.0" layoutY="185.0" />
-      <Button fx:id="btnRegister" layoutX="253.0" layoutY="275.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="88.0" text="Register" />
+      <Button fx:id="registerButton" layoutX="253.0" layoutY="275.0" mnemonicParsing="false" onAction="#goToRegister" prefHeight="25.0" prefWidth="88.0" text="Register" />
    </children>
 </AnchorPane>

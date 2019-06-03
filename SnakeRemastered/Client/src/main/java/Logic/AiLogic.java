@@ -14,7 +14,7 @@ public class AiLogic implements Iplayer {
 
     final private int totalGrids;
     final private int column;
-    private int movementspeed= 200;
+    private int movementspeed = 200;
     final private AiLogic opponent;
 
     public String getColor() {
@@ -52,13 +52,6 @@ public class AiLogic implements Iplayer {
         return source;
     }
 
-    public void setSource(int source) {
-        this.source = source;
-    }
-
-    public int getDestination() {
-        return destination;
-    }
 
     public void setDestination(int destination) {
         this.destination = destination;
@@ -112,9 +105,9 @@ public class AiLogic implements Iplayer {
                 forwardGrid = true;
 
             if (i + 1 < totalGrids)
-                if (nodes.get(i + 1).getStatus() == TileObject.WALL )
+                if (nodes.get(i + 1).getStatus() == TileObject.WALL)
                     forwardGrid = true;
-                else if(nodes.get(i + 1).getStatus() == TileObject.TERRITORY){
+                else if (nodes.get(i + 1).getStatus() == TileObject.TERRITORY) {
                     forwardGrid = true;
                 }
 
@@ -124,7 +117,7 @@ public class AiLogic implements Iplayer {
             if (i + column < totalGrids)
                 if (nodes.get(i + column).getStatus() == TileObject.WALL)
                     belowGrid = true;
-                else if(nodes.get(i + column).getStatus() == TileObject.TERRITORY) {
+                else if (nodes.get(i + column).getStatus() == TileObject.TERRITORY) {
                     belowGrid = true;
                 }
 
@@ -133,9 +126,9 @@ public class AiLogic implements Iplayer {
                 backwardsGrid = true;
 
             if (i - 1 > 0 && i % column != 0)
-                if (nodes.get(i - 1).getStatus() == TileObject.WALL )
+                if (nodes.get(i - 1).getStatus() == TileObject.WALL)
                     backwardsGrid = true;
-                else if( nodes.get(i - 1).getStatus() == TileObject.TERRITORY) {
+                else if (nodes.get(i - 1).getStatus() == TileObject.TERRITORY) {
                     forwardGrid = true;
                 }
 
@@ -145,7 +138,7 @@ public class AiLogic implements Iplayer {
             if (i - column > 0)
                 if (nodes.get(i - column).getStatus() == TileObject.WALL)
                     aboveGrid = true;
-                else if(nodes.get(i - column).getStatus() == TileObject.TERRITORY) {
+                else if (nodes.get(i - column).getStatus() == TileObject.TERRITORY) {
                     forwardGrid = true;
                 }
 
@@ -202,19 +195,18 @@ public class AiLogic implements Iplayer {
         graph = new Graph(this.nodes, this.edges);
         dijstra = new DijkstraLogic(graph);
         dijstra.execute(nodes.get(source));
-        destination = movement.getPlayer().getCurrentLocation();
         LinkedList<Vertex> path = dijstra.getPath(nodes.get(destination));
         edges.clear();
 
         long endTime = System.currentTimeMillis();
-       // long duration = ((endTime - startTime));
+        // long duration = ((endTime - startTime));
         //System.out.println(duration + " ms");
         return path;
     }
 
     @Override
     public void setSpawnPoint(int spawnPoint) {
-        source = spawnPoint;
+        this.source = spawnPoint;
     }
 
     @Override
@@ -234,9 +226,11 @@ public class AiLogic implements Iplayer {
             public void run() {
 
 
+               if (movement != null)
                 destination = movement.getPlayer().getCurrentLocation();
                 int destinationId = -1;
                 List<Vertex> vertexList = calculatePath();
+               if (vertexList != null)
                 if (vertexList.get(1) != null) {
                     if (vertexList.size() > 1) {
                         destinationId = vertexList.get(1).getIdNumber();
@@ -266,7 +260,9 @@ public class AiLogic implements Iplayer {
 
     @Override
     public void setSpeed(int speed) {
-        endGame();
+        if (timer != null)
+            endGame();
+
         movementspeed = speed;
         startGame();
     }
@@ -278,9 +274,13 @@ public class AiLogic implements Iplayer {
 
     @Override
     public void playerDies() {
-endGame();
+        endGame();
     }
 
+    @Override
+    public int getMovementSpeed() {
+        return movementspeed;
+    }
 
 
     public void endGame() {

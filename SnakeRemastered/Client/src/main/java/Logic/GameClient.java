@@ -203,7 +203,11 @@ public class GameClient implements IGameClient {
         }
     }
 
-    public Iplayer getPlayerLogic() {
+    public IPlayerLogic getPlayerLogic() {
         return player;
+    }
+
+    public Iplayer getAi(){
+        return opponent;
     }
 }

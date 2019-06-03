@@ -1,6 +1,6 @@
 import Enum.Direction;
 import Interface.IGridMain;
-import Interface.Iplayer;
+import Interface.IPlayerLogic;
 import Logic.GameClient;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -9,7 +9,7 @@ import org.junit.jupiter.api.Test;
 public class PlayerLogicTest {
 
     private GameClient gameClient;
-    private Iplayer player;
+    private IPlayerLogic player;
 
     @BeforeEach
     public void setUp() {
@@ -93,6 +93,11 @@ public class PlayerLogicTest {
         player.playerDies();
 
         Assertions.assertNotEquals(movement, player.getMovementSpeed());
+
+    }
+
+    @Test
+    public void GetSpeedPowerUp() {
 
     }
 

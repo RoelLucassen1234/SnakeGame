@@ -73,6 +73,14 @@ public class SnakeLoginClient {
         return response.getUser();
     }
 
+    public User register(String username, String password) {
+        User userRequest = new User(username, password);
+        String queryPost = "/register";
+        SnakeRestResponse response = executeQueryPost(userRequest, queryPost);
+        return response.getUser();
+    }
+
+
     private SnakeRestResponse executeHttpUriRequest(HttpUriRequest httpUriRequest) {
 
         // Execute the HttpUriRequest

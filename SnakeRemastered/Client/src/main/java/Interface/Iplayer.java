@@ -15,6 +15,6 @@ public interface Iplayer {
    void setSpeed(int speed);
    int getPlayerNumber();
    void playerDies();
-
+    int getMovementSpeed();
 
 }
