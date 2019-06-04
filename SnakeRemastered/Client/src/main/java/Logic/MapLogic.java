@@ -15,13 +15,13 @@ public class MapLogic {
     private final int column;
     private Random random;
     private List<Vertex> nodes = new ArrayList<>();
+
     public List<Vertex> getNodes() {
         return nodes;
     }
 
 
-
-    public MapLogic(int maxSize, int column,boolean test) {
+    public MapLogic(int maxSize, int column, boolean test) {
         this.totalGrids = maxSize;
         this.column = column;
         this.random = new Random(0);
@@ -37,34 +37,42 @@ public class MapLogic {
     }
 
     public void createMap(boolean test) {
-
-        TileObject object;
-
         if (!test) {
-            for (int i = 0; i < totalGrids; i++) {
-                if (this.random.nextInt(8) == 33)
-                    object = TileObject.WALL;
-                else if (this.random.nextInt(40) == 2)
-                    object = TileObject.POWERUP;
-                else
-                    object = TileObject.WALKABLE;
+            createPlayMap();
+        } else {
+            createTestMap();
+        }
+    }
 
-                addGrid(i, object);
 
-            }
-        }else {
-            for (int i = 0; i < totalGrids; i++) {
-                if (i % 4 == 0)
-                    object = TileObject.WALL;
-                else if (i % 21 == 0)
-                    object = TileObject.POWERUP;
-                else
-                    object = TileObject.WALKABLE;
+    private void createTestMap() {
+        TileObject object;
+        for (int i = 0; i < totalGrids; i++) {
+            if (i % 4 == 0)
+                object = TileObject.WALL;
+            else if (i % 21 == 0)
+                object = TileObject.POWERUP;
+            else
+                object = TileObject.WALKABLE;
 
-                addGrid(i, object);
-            }
+            addGrid(i, object);
         }
 
+    }
+
+    private void createPlayMap() {
+        TileObject object;
+        for (int i = 0; i < totalGrids; i++) {
+            if (this.random.nextInt(8) == 33)
+                object = TileObject.WALL;
+            else if (this.random.nextInt(40) == 2)
+                object = TileObject.POWERUP;
+            else
+                object = TileObject.WALKABLE;
+
+            addGrid(i, object);
+
+        }
     }
 
     private void addGrid(int i, TileObject object) {
@@ -76,13 +84,13 @@ public class MapLogic {
         return this.nodes;
     }
 
-    public Vertex getSpecificNode(int number){
-      List<Vertex> node = nodes.stream().filter(vertex -> vertex.getIdNumber() == number).collect(Collectors.toList());
-      return node.get(0);
+    public Vertex getSpecificNode(int number) {
+        List<Vertex> node = nodes.stream().filter(vertex -> vertex.getIdNumber() == number).collect(Collectors.toList());
+        return node.get(0);
     }
 
-    public List<Vertex> getAllNodesTouchedByPlayer(int Playernumber){
+    public List<Vertex> getAllNodesTouchedByPlayer(int Playernumber) {
         System.out.println(Playernumber);
-       return nodes.stream().filter(vertex -> vertex.getTouchedBy() == Playernumber).collect(Collectors.toList());
+        return nodes.stream().filter(vertex -> vertex.getTouchedBy() == Playernumber).collect(Collectors.toList());
     }
 }

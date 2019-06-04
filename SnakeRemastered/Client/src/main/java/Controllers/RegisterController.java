@@ -1,6 +1,5 @@
 package Controllers;
 
-import Models.User;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -26,10 +25,10 @@ public class RegisterController {
 
     @FXML
     public void registerUser(ActionEvent actionEvent) throws IOException{
-        User user = client.register(tbUsername.getText(), tbPassword.getText());
+        boolean user = client.register(tbUsername.getText(), tbPassword.getText());
 
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
-        if (user != null){
+        if (user){
             alert.setTitle("Succesfully registered");
             alert.setHeaderText("You have succeeded");
            alert.showAndWait();

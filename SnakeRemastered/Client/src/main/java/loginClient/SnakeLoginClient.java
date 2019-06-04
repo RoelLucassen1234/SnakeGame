@@ -73,11 +73,11 @@ public class SnakeLoginClient {
         return response.getUser();
     }
 
-    public User register(String username, String password) {
+    public boolean register(String username, String password) {
         User userRequest = new User(username, password);
         String queryPost = "/register";
         SnakeRestResponse response = executeQueryPost(userRequest, queryPost);
-        return response.getUser();
+        return response.getSuccess();
     }
 
 

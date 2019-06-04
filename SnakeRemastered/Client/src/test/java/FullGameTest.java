@@ -14,7 +14,7 @@ public class FullGameTest {
     @BeforeEach
     public void setUp() {
         client = new GameClient(true, 30, 30, null, true);
-        client.getPlayer().setSpawnPoint(0);
+        client.getPlayer().setCurrentPoint(0);
         map = new MapLogic(900, 30, true);
         logic = new AiLogic(900, 30, map.getMap(), 0, client);
     }
@@ -56,11 +56,6 @@ public class FullGameTest {
         client.move(client.getPlayer());
 
         Assertions.assertNotEquals(location, client.getPlayer().getCurrentLocation());
-    }
-
-    @Test
-    public void ChangeDirection(){
-
     }
 
 

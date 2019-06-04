@@ -16,24 +16,24 @@ public class AiLogicTest {
     @BeforeEach
     public void setUp() {
         GameClient client = new GameClient(true,30,30,null,true);
-        client.getPlayer().setSpawnPoint(0);
+        client.getPlayer().setCurrentPoint(0);
         map = new MapLogic(900, 30, true);
         logic = new AiLogic(900, 30, map.getMap(), 0, client);
     }
 
     @Test
     public void AiLogicSpawn() {
-        int spawn = logic.getSpawnPoint();
+        int spawn = logic.getCurrentLocation();
         int newspawn = 30;
 
-        logic.setSpawnPoint(newspawn);
+        logic.setCurrentPoint(newspawn);
 
-        Assertions.assertNotEquals(spawn, logic.getSpawnPoint());
+        Assertions.assertNotEquals(spawn, logic.getCurrentLocation());
     }
 
     @Test
     public void FindPathToTarget() {
-        logic.setSpawnPoint(1);
+        logic.setCurrentPoint(1);
         logic.setDestination(2);
         List<Vertex> path;
 
@@ -79,13 +79,14 @@ public class AiLogicTest {
     public void movement() throws InterruptedException {
         int spawnpoint = 3;
         logic.setDirection(Direction.DOWN);
-        logic.setSpawnPoint(spawnpoint);
+        logic.setCurrentPoint(spawnpoint);
+
 
         logic.startGame();
         Thread.sleep(1000);
         logic.endGame();
 
-        Assertions.assertNotEquals(spawnpoint, logic.getSpawnPoint());
+        Assertions.assertNotEquals(spawnpoint, logic.getCurrentLocation());
 
     }
 

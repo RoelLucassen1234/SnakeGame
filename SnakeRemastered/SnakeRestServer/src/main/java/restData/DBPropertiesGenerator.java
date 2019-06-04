@@ -2,45 +2,42 @@ package restData;
 
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.OutputStream;
 import java.util.Properties;
 import java.util.logging.Logger;
 
 public class DBPropertiesGenerator {
 
+    private static FileOutputStream output;
+    private static final Logger LOG = Logger.getLogger(DBPropertiesGenerator.class.getName());
 
-        private static final Logger LOG = Logger.getLogger(DBPropertiesGenerator.class.getName());
+    public static void main(String[] args) {
 
-        public static void main(String[] args) {
 
+        try {
             Properties prop = new Properties();
-            OutputStream output = null;
+            output = new FileOutputStream("db.prop");
 
-            try {
+            // set the properties value
+            prop.setProperty("jdbc.drivers", "org.sqlite.JDBC");
+            prop.setProperty("jdbc.url", "jdbc:sqlite:databaseSnake.db");
+            prop.setProperty("jdbc.username", "");
+            prop.setProperty("jdbc.password", "");
 
-                output = new FileOutputStream("db.prop");
+            // save properties to project root folder
+            prop.store(output, null);
 
-                // set the properties value
-                prop.setProperty("jdbc.drivers", "org.sqlite.JDBC");
-                prop.setProperty("jdbc.url", "jdbc:sqlite:databaseSnake.db");
-                prop.setProperty("jdbc.username", "");
-                prop.setProperty("jdbc.password", "");
-
-                // save properties to project root folder
-                prop.store(output, null);
-
-            } catch (IOException io) {
-                LOG.warning(io.getMessage());
-            } finally {
-                if (output != null) {
-                    try {
-                        output.close();
-                    } catch (IOException e) {
-                        LOG.warning(e.getMessage());
-                    }
+        } catch (IOException io) {
+            LOG.warning(io.getMessage());
+        } finally {
+            if (output != null) {
+                try {
+                    output.close();
+                } catch (IOException e) {
+                    LOG.warning(e.getMessage());
                 }
-
             }
+
         }
     }
+}
 

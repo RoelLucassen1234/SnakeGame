@@ -8,8 +8,6 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import loginClient.SnakeLoginClient;
@@ -17,12 +15,9 @@ import loginClient.SnakeLoginClient;
 import java.io.IOException;
 
 public class LoginController {
-    public Label titleLoginLabel;
-    public Label userNameLabel;
-    public Label passWordLabel;
+
     public TextField tbUsername;
     public TextField tbPassword;
-    public PasswordField passwordField;
     public Button registerButton;
     public Button logInButton;
 

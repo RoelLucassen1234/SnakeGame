@@ -26,6 +26,7 @@ public class GameClient implements IGameClient {
     private boolean singlePlayer;
     private Random random = new Random();
 
+
     private CommunicatorClientObserver clientObserver = null;
 
     public GamePhase getPhase() {
@@ -60,16 +61,13 @@ public class GameClient implements IGameClient {
 
 
     public List<Vertex> getObjects(TileObject object) {
-        if (singlePlayer)
-            return map.getNodes().stream().filter(vertex -> vertex.getStatus().equals(object)).collect(Collectors.toList());
-        else
             return map.getNodes().stream().filter(vertex -> vertex.getStatus().equals(object)).collect(Collectors.toList());
     }
 
     public boolean setSpawnPoint(int tileId) {
 
         if (map.getSpecificNode(tileId).getStatus() != TileObject.WALL && map.getSpecificNode(tileId).getStatus() != TileObject.POWERUP) {
-            player.setSpawnPoint(tileId);
+            player.setCurrentPoint(tileId);
             if (singlePlayer) {
                 startGame();
                 return true;
@@ -84,8 +82,8 @@ public class GameClient implements IGameClient {
     }
 
     public void startGame() {
-        if (singlePlayer && player.getSpawnPoint() != -1) {
-            Random random = new Random();
+        if (singlePlayer && player.getCurrentLocation() != -1) {
+            random = new Random();
             List<Vertex> spawnpoints = getObjects(TileObject.WALKABLE);
             Vertex vertex = spawnpoints.get(random.nextInt(spawnpoints.size()));
             opponent = new AiLogic(map.getTotalGrids(), map.getColumn(), map.getNodes(), vertex.getIdNumber(), this);
@@ -122,18 +120,20 @@ public class GameClient implements IGameClient {
         {
             if (node.getStatus() == TileObject.TERRITORY || node.getStatus() == TileObject.WALL) {
                 player.playerDies();
-                if (boardMap != null)
-                boardMap.removeTerritory(map.getAllNodesTouchedByPlayer(player.getPlayerNumber()));
+                if (boardMap != null) {
+                    boardMap.removeTerritory(map.getAllNodesTouchedByPlayer(player.getPlayerNumber()));
+                }
 
                 if (!singlePlayer) {
 
                 }
             } else {
                 map.getSpecificNode(player.getCurrentLocation()).setStatus(TileObject.WALL);
-                player.setCurrentSpawn(node.getIdNumber());
+                player.setCurrentPoint(node.getIdNumber());
                 node.setTouchedBy(player.getPlayerNumber());
-                if (boardMap != null)
-                boardMap.showPath(node, player.colorReturn());
+                if (boardMap != null) {
+                    boardMap.showPath(node, player.colorReturn());
+                }
 
                 if (!singlePlayer) {
                     clientObserver.sendPosition(player.getPlayerNumber(), node.getIdNumber());
@@ -162,7 +162,7 @@ public class GameClient implements IGameClient {
     }
 
     public void changePlayerDirection(String code) {
-        Direction direction = Direction.LEFT;
+        Direction direction;
         switch (code) {
             case "LEFT":
                 direction = Direction.LEFT;

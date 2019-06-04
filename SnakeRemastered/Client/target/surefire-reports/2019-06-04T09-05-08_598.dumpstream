@@ -1,0 +1,15 @@
+# Created at 2019-06-04T09:05:09.626
+Java HotSpot(TM) 64-Bit Server VM warning: Ignoring option MaxPermSize; support was removed in 8.0
+
+# Created at 2019-06-04T09:05:09.841
+WARNING: package PlayerLogicTest not in Client
+
+# Created at 2019-06-04T09:05:09.850
+WARNING: package AiLogicTest not in Client
+
+# Created at 2019-06-04T09:05:09.856
+WARNING: package FullGameTest not in Client
+
+# Created at 2019-06-04T09:05:09.861
+WARNING: package MapLogicTest not in Client
+

@@ -9,5 +9,5 @@ public interface IGameClient {
     Iplayer getPlayer();
     List<Vertex> getNodes();
     void receiveReady(int playerNumber);
-    void receivePosition(int Playernumber, int position);
+    void receivePosition(int playernumber, int position);
 }

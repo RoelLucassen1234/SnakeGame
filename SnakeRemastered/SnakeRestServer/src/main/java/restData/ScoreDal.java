@@ -6,9 +6,12 @@ import Models.User;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class ScoreDal {
     private SQLConnector sqlConnector;
+    private final static Logger LOGGER = Logger.getLogger(ScoreDal.class.getName());
 
     public ScoreDal(){
         sqlConnector = new SQLConnector();
@@ -23,7 +26,7 @@ public class ScoreDal {
             sqlConnector.executeUpdate(statement);
 
         } catch (Exception ex) {
-            ex.printStackTrace();
+            LOGGER.log(Level.WARNING, ex.getMessage());
             return false;
 
         } finally {
@@ -49,12 +52,12 @@ public class ScoreDal {
 
 
         } catch (Exception ex) {
-            ex.printStackTrace();
+            LOGGER.log(Level.WARNING, ex.getMessage());
 
         } finally {
 
             sqlConnector.close();
-            return retrievedScore ;
         }
+        return retrievedScore ;
     }
 }

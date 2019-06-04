@@ -6,7 +6,7 @@ import org.eclipse.jetty.servlet.ServletContextHandler;
 import org.eclipse.jetty.servlet.ServletHolder;
 import org.glassfish.jersey.servlet.ServletContainer;
 
-public class SeaBattleRESTServer {
+public class SnakeRESTServer {
 
     public static void main(String[] args) throws Exception {
 

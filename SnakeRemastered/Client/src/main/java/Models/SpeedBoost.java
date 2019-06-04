@@ -17,6 +17,9 @@ public class SpeedBoost extends PowerUp {
             case 1:
                 super.powerUpType = PowerUpType.HOSTILE;
                 break;
+                default:
+                    super.powerUpType = PowerUpType.FRIENDLY;
+                    break;
         }
     }
 

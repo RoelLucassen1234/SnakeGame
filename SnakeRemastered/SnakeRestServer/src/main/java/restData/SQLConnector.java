@@ -13,12 +13,16 @@ public class SQLConnector {
 
     private  String url;
 
+    private final static Logger LOGGER = Logger.getLogger(SQLConnector.class.getName());
+
+
     private Connection conn;
 
+    private final String dbname = "db.prop";
     public SQLConnector() {
         FileInputStream input = null;
-        try {
-            input = new FileInputStream("db.prop");
+        try  {
+            input = new FileInputStream(dbname);
             // load a properties file
             Properties prop = new Properties();
             try {
@@ -37,7 +41,7 @@ public class SQLConnector {
         } catch (FileNotFoundException ex) {
             Logger.getLogger(SQLConnector.class.getName()).log(Level.SEVERE, null, ex);
         } catch (ClassNotFoundException e) {
-            e.printStackTrace();
+            LOGGER.log(Level.WARNING, e.getMessage());
         }
     }
 
@@ -46,7 +50,7 @@ public class SQLConnector {
         try {
             conn = DriverManager.getConnection(url);
         } catch (SQLException e) {
-            System.out.println(e.getMessage());
+            LOGGER.log(Level.WARNING, e.getMessage());
         }
 
     }
@@ -56,7 +60,7 @@ public class SQLConnector {
             return this.conn.prepareStatement(stmt);
         }
         catch (Exception e) {
-            e.printStackTrace();
+            LOGGER.log(Level.WARNING, e.getMessage());
             return null;
         }
     }
@@ -66,7 +70,7 @@ public class SQLConnector {
             return stmt.executeQuery();
         }
         catch (Exception e) {
-            e.printStackTrace();
+            LOGGER.log(Level.WARNING, e.getMessage());
             return null;
         }
     }
@@ -76,7 +80,7 @@ public class SQLConnector {
             return stmt.executeUpdate();
         }
         catch (Exception e) {
-            e.printStackTrace();
+            LOGGER.log(Level.WARNING, e.getMessage());
         }
         return 0;
     }
@@ -87,7 +91,7 @@ public class SQLConnector {
             this.conn.close();
         }
         catch (Exception e) {
-            e.printStackTrace();
+            LOGGER.log(Level.WARNING, e.getMessage());
         }
     }
 }

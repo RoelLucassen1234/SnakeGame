@@ -22,9 +22,9 @@ public class PlayerLogicTest {
     public void setSpawn() {
         int spawnpoint = 0;
 
-        player.setSpawnPoint(spawnpoint);
+        player.setCurrentPoint(spawnpoint);
 
-        Assertions.assertEquals(0, player.getSpawnPoint());
+        Assertions.assertEquals(0, player.getCurrentLocation());
     }
 
     @Test
@@ -34,7 +34,7 @@ public class PlayerLogicTest {
 
         player.setDirection(direction);
 
-        Assertions.assertNotEquals(currentPlayerDirection, player.getSpawnPoint());
+        Assertions.assertNotEquals(currentPlayerDirection, player.getCurrentLocation());
 
     }
 
@@ -71,7 +71,7 @@ public class PlayerLogicTest {
     @Test
     public void movePlayer() throws InterruptedException {
         int spawnpoint = 0;
-        player.setSpawnPoint(spawnpoint);
+        player.setCurrentPoint(spawnpoint);
         player.setReady(true);
         player.startGame();
         Thread.sleep(600);
@@ -96,9 +96,5 @@ public class PlayerLogicTest {
 
     }
 
-    @Test
-    public void GetSpeedPowerUp() {
-
-    }
 
 }

@@ -5,10 +5,14 @@ import restInterface.IUserDal;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class UserDal implements IUserDal {
 
     private SQLConnector sqlConnector;
+    private final static Logger LOGGER = Logger.getLogger(UserDal.class.getName());
+
 
     public UserDal(){
         sqlConnector = new SQLConnector();
@@ -23,7 +27,7 @@ public class UserDal implements IUserDal {
             sqlConnector.executeUpdate(statement);
 
         } catch (Exception ex) {
-            ex.printStackTrace();
+            LOGGER.log(Level.WARNING, ex.getMessage());
             return false;
 
         } finally {
@@ -49,13 +53,14 @@ public class UserDal implements IUserDal {
 
 
         } catch (Exception ex) {
-            ex.printStackTrace();
+            LOGGER.log(Level.WARNING, ex.getMessage());
 
         } finally {
 
             sqlConnector.close();
-            return retrievedUser;
+
         }
+        return retrievedUser;
     }
 
     @Override
@@ -75,15 +80,16 @@ public class UserDal implements IUserDal {
 
 
         } catch (Exception ex) {
-            ex.printStackTrace();
+            LOGGER.log(Level.WARNING, ex.getMessage());
             return false;
 
         } finally {
 
             sqlConnector.close();
-            if (existUsername != null)
-            return true;
-            return false;
+
         }
+        if (existUsername != null)
+            return true;
+        return false;
     }
 }

@@ -23,14 +23,6 @@ public class PlayerLogic implements IPlayerLogic {
       this.playerInfo = this;
     }
 
-    public void setSpawnPoint(int spawnPoint){
-        player.setSpawnPoint(spawnPoint);
-    }
-
-    @Override
-    public int getSpawnPoint() {
-        return player.getSpawnPoint();
-    }
 
     @Override
     public int getCurrentLocation() {
@@ -44,12 +36,13 @@ public class PlayerLogic implements IPlayerLogic {
 
     @Override
     public void setDirection(Direction direction) {
-        if (direction != null)
-        player.setDirection(direction);
+        if (direction != null) {
+            player.setDirection(direction);
+        }
     }
 
     @Override
-    public void setCurrentSpawn(int currentSpawn) {
+    public void setCurrentPoint(int currentSpawn) {
         player.setCurrentPoint(currentSpawn);
     }
 

@@ -12,13 +12,14 @@ public class RestResponseHelper {
 
     private static final Logger log = LoggerFactory.getLogger(UserController.class);
     private static final Gson gson = new Gson();
+    private static final String serverResponse = "[Server response] {}";
 
     public static String getSuccessResponse(boolean success)
     {
         SnakeRestResponse response = new SnakeRestResponse();
         response.setSuccess(success);
         String output = gson.toJson(response);
-        log.info("[Server response] {}", output);
+        log.info(serverResponse, output);
         return output;
     }
 
@@ -27,7 +28,7 @@ public class RestResponseHelper {
         SnakeRestResponse response = new SnakeRestResponse();
         response.setSuccess(false);
         String output = gson.toJson(response);
-        log.info("[Server response] {}", output);
+        log.info(serverResponse, output);
         return output;
     }
 
@@ -36,14 +37,14 @@ public class RestResponseHelper {
         response.setSuccess(true);
         response.setUser(user);
         String output = gson.toJson(response);
-        log.info("[Server response] {}", output);
+        log.info(serverResponse, output);
         return output;
     }
     public static String getPlayerScore(PlayerScore playerScore){
         SnakeRestResponse response = new SnakeRestResponse();
         response.setPlayerScore(playerScore);
         String output = gson.toJson(response);
-        log.info("[Server response] {}", output);
+        log.info(serverResponse, output);
         return output;
     }
 
