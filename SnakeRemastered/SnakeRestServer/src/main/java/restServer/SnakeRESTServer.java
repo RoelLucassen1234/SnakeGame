@@ -1,5 +1,6 @@
 package restServer;
 
+import controller.ScoreController;
 import controller.UserController;
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.servlet.ServletContextHandler;
@@ -19,7 +20,9 @@ public class SnakeRESTServer {
         jerseyServlet.setInitOrder(0);
         // Tells the Jersey Servlet which REST service/class to load.
         jerseyServlet.setInitParameter("jersey.config.server.provider.classnames",
-                UserController.class.getCanonicalName());
+                UserController.class.getCanonicalName() + ", " + ScoreController.class.getCanonicalName());
+
+
 
         try {
             jettyServer.start();

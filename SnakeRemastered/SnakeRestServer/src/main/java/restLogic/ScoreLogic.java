@@ -2,7 +2,6 @@ package restLogic;
 
 import Models.GameResult;
 import Models.PlayerScore;
-import Models.User;
 import restData.ScoreDal;
 
 public class ScoreLogic {
@@ -21,10 +20,9 @@ public class ScoreLogic {
     }
 
 
-    public PlayerScore getScoreboard(User user) {
-        if (user.getPassword() != null && user.getUsername() != null)
+    public PlayerScore getScoreboard(String user) {
             return iScoreDal.getGameResult(user);
-        return null;
+
     }
 
 }

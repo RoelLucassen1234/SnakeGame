@@ -152,14 +152,6 @@ public class GameClient implements IGameClient {
         return player;
     }
 
-    @Override
-    public List<Vertex> getNodes() {
-        if (singlePlayer)
-            return map.getNodes();
-        else
-            return null;
-
-    }
 
     public void changePlayerDirection(String code) {
         Direction direction;

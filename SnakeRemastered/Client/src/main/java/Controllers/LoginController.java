@@ -14,7 +14,7 @@ import loginClient.SnakeLoginClient;
 
 import java.io.IOException;
 
-public class LoginController {
+public class LoginController{
 
     public TextField tbUsername;
     public TextField tbPassword;
@@ -30,9 +30,10 @@ public class LoginController {
 
         User user = client.login(tbUsername.getText(), tbPassword.getText());
         if (user != null) {
-            stage = (Stage) logInButton.getScene().getWindow();
-            Parent root = FXMLLoader.load(getClass().getResource("/Menu.fxml"));
-            switchStage(root, stage);
+           showMenu(user);
+//            stage = (Stage) logInButton.getScene().getWindow();
+//            Parent root = FXMLLoader.load(getClass().getResource("/Menu.fxml"));
+//            switchStage(root, stage);
         }
 
 
@@ -40,17 +41,33 @@ public class LoginController {
 
     @FXML
     public void goToRegister(ActionEvent actionEvent) throws IOException {
-            stage = (Stage) registerButton.getScene().getWindow();
-            Parent root = FXMLLoader.load(getClass().getResource("/Register.fxml"));
-            switchStage(root, stage);
+        stage = (Stage) registerButton.getScene().getWindow();
+        Parent root = FXMLLoader.load(getClass().getResource("/Register.fxml"));
+        switchStage(root, stage);
 
 
     }
 
 
-    private void switchStage(Parent root, Stage stage){
+    private void showMenu(User user) throws IOException {
+
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/Menu.fxml"));
+
+        Parent root = fxmlLoader.load();
+        MenuController controller = fxmlLoader.<MenuController>getController();
+        controller.setName(user.getUsername());
+        Scene scene = new Scene(root);
+        stage = new Stage();
+        stage.setScene(scene);
+        stage.show();
+
+    }
+
+
+    private void switchStage(Parent root, Stage stage) {
         Scene scene = new Scene(root);
         stage.setScene(scene);
         stage.show();
     }
+
 }

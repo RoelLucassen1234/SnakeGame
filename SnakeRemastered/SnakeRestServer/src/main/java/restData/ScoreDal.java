@@ -2,7 +2,6 @@ package restData;
 
 import Models.GameResult;
 import Models.PlayerScore;
-import Models.User;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -36,13 +35,12 @@ public class ScoreDal {
     }
 
 
-    public PlayerScore getGameResult(User user) {
+    public PlayerScore getGameResult(String user) {
         PlayerScore retrievedScore = null;
         try {
             sqlConnector.open();
 
-            String statement = "Select * FROM user \n" +
-                    " WHERE user.username = '" + user.getUsername() +"' AND user.password = '"+ user.getPassword() +"'";
+            String statement = "SELECT sum(case when win then 0 else 1 end) as wins, sum(case when win then 1 else 0 end) as losses FROM Score s INNER JOIN user u ON u.id = s.userId WHERE u.username = \"" + user + "\"";
 
             ResultSet rs = sqlConnector.executeQuery(sqlConnector.getStatement(statement));
 

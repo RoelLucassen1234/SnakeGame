@@ -1,5 +1,7 @@
 package loginClient;
 
+import Interface.IRESTRequests;
+import Models.PlayerScore;
 import Models.SnakeRestResponse;
 import Models.User;
 import com.google.gson.Gson;
@@ -20,10 +22,10 @@ import org.slf4j.LoggerFactory;
 import java.io.IOException;
 
 
-public class SnakeLoginClient {
+public class SnakeLoginClient implements IRESTRequests {
     private final Logger log = LoggerFactory.getLogger(SnakeLoginClient.class);
 
-    private static final String url = "http://localhost:8090/user";
+    private static final String url = "http://localhost:8090";
 
     private final Gson gson = new Gson();
 
@@ -68,16 +70,23 @@ public class SnakeLoginClient {
 
     public User login(String username, String password) {
         User userRequest = new User(username, password);
-        String queryPost = "/login";
+        String queryPost = "/user/login";
         SnakeRestResponse response = executeQueryPost(userRequest, queryPost);
         return response.getUser();
     }
 
     public boolean register(String username, String password) {
         User userRequest = new User(username, password);
-        String queryPost = "/register";
+        String queryPost = "/user/register";
         SnakeRestResponse response = executeQueryPost(userRequest, queryPost);
         return response.getSuccess();
+    }
+
+    public PlayerScore getScore(String user){
+
+        String queryPost = "/score/" + user;
+        SnakeRestResponse response = executeQueryGet(queryPost);
+        return response.getPlayerScore();
     }
 
 

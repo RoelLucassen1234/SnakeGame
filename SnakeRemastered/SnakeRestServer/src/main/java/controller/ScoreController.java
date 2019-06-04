@@ -2,18 +2,14 @@ package controller;
 
 import Models.GameResult;
 import Models.PlayerScore;
-import Models.User;
 import restLogic.ScoreLogic;
 import restServer.RestResponseHelper;
 
-import javax.ws.rs.GET;
-import javax.ws.rs.POST;
-import javax.ws.rs.Path;
-import javax.ws.rs.Produces;
+import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
-@Path("score")
+@Path("/score")
 public class ScoreController {
 
     ScoreLogic scoreLogic = new ScoreLogic();
@@ -32,12 +28,12 @@ public class ScoreController {
     }
 
     @GET
-    @Path("/user/{username}")
+    @Path("/{username}")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getBattleResult(User user) {
+    public Response getBattleResult(@PathParam("username") String username) {
 
         System.out.println("[Server getUser]");
-        PlayerScore playerScore = scoreLogic.getScoreboard(user);
+        PlayerScore playerScore = scoreLogic.getScoreboard(username);
         if (playerScore != null) {
             return Response.status(200).entity(RestResponseHelper.getPlayerScore(playerScore)).build();
         } else {
