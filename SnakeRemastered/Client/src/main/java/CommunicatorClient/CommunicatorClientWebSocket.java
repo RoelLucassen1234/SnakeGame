@@ -35,10 +35,10 @@ public class CommunicatorClientWebSocket extends Communicator {
     private static CommunicatorClientWebSocket instance = null;
 
     /**
-     * The local websocket uri to connect to.
+     * The local websocket url to connect to.
      */
 
-    private static final String uri = "ws://192.168.222.8:8097/communicator/";
+    private static final String url = "ws://localhost:8097/communicator/";
 
     private Session session;
 
@@ -182,7 +182,7 @@ public class CommunicatorClientWebSocket extends Communicator {
         log.info("[WebSocket Client start]");
         try {
             WebSocketContainer container = ContainerProvider.getWebSocketContainer();
-            container.connectToServer(this, new URI(uri));
+            container.connectToServer(this, new URI(url));
 
         } catch (IOException | URISyntaxException | DeploymentException ex) {
             // do something useful eventually

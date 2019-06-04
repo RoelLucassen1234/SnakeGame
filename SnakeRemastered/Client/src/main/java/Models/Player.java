@@ -59,14 +59,7 @@ public class Player {
         this.direction = direction;
     }
 
-    public void setSpawnPoint(int spawnTile){
-        this.spawnPoint = spawnTile;
-        this.currentPoint = spawnPoint;
-    }
 
-    public int getSpawnPoint(){
-        return this.spawnPoint;
-    }
 
     public void removeLife(){
         lives--;

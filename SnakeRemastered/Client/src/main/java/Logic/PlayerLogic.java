@@ -2,20 +2,16 @@ package Logic;
 
 import Enum.Direction;
 import Interface.IGameClient;
-import Interface.Iplayer;
+import Interface.IPlayerLogic;
 import Models.Player;
 
 import java.util.Timer;
 import java.util.TimerTask;
 
-public class PlayerLogic implements Iplayer {
+public class PlayerLogic implements IPlayerLogic {
     private Player player;
     private Timer timer;
     private IGameClient movement;
-
-    public void setMovementspeed(int movementspeed) {
-        this.movementspeed = movementspeed;
-    }
 
     private int movementspeed = 200;
     final private PlayerLogic playerInfo;
@@ -27,14 +23,6 @@ public class PlayerLogic implements Iplayer {
       this.playerInfo = this;
     }
 
-    public void setSpawnPoint(int spawnPoint){
-        player.setSpawnPoint(spawnPoint);
-    }
-
-    @Override
-    public int getSpawnPoint() {
-        return player.getSpawnPoint();
-    }
 
     @Override
     public int getCurrentLocation() {
@@ -48,11 +36,13 @@ public class PlayerLogic implements Iplayer {
 
     @Override
     public void setDirection(Direction direction) {
-        player.setDirection(direction);
+        if (direction != null) {
+            player.setDirection(direction);
+        }
     }
 
     @Override
-    public void setCurrentSpawn(int currentSpawn) {
+    public void setCurrentPoint(int currentSpawn) {
         player.setCurrentPoint(currentSpawn);
     }
 
@@ -83,14 +73,16 @@ public class PlayerLogic implements Iplayer {
             public void run() {
                 movement.move(playerInfo);
             }
-        }, 200, movementspeed);
+        }, 400, movementspeed);
     }
 
     @Override
    public void playerDies(){
         player.removeLife();
-        timer.cancel();
-        timer.purge();
+      if (timer != null) {
+          timer.cancel();
+          timer.purge();
+      }
    }
 
    @Override
@@ -104,8 +96,14 @@ public class PlayerLogic implements Iplayer {
    public void setReady(boolean ready){
         player.setReady(ready);
    }
-    public int getPlayerLife(){
+  @Override
+   public int getPlayerLife(){
        return player.getLives();
+    }
+
+    @Override
+    public int getMovementSpeed(){
+        return movementspeed;
     }
 }
 

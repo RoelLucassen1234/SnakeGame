@@ -17,12 +17,15 @@ public class SpeedBoost extends PowerUp {
             case 1:
                 super.powerUpType = PowerUpType.HOSTILE;
                 break;
+                default:
+                    super.powerUpType = PowerUpType.FRIENDLY;
+                    break;
         }
     }
 
     @Override
     public void update(Iplayer iplayer){
-        iplayer.setSpeed(230);
+        iplayer.setSpeed(300);
 
     }
 }

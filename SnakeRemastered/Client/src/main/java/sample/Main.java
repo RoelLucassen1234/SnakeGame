@@ -25,6 +25,7 @@ public class Main extends Application implements IGridMain {
     int numCols;
     private GridPane grid;
     private GameClient client;
+    private final String backgroundColor = "-fx-background-color:#";
 
 
     @Override
@@ -108,9 +109,9 @@ public class Main extends Application implements IGridMain {
             for (Node node : grid.getChildren()) {
                 if (GridPane.getColumnIndex(node) == y && GridPane.getRowIndex(node) == x)
                     if (vertex.getStatus() == TileObject.POWERUP)
-                        node.setStyle("-fx-background-color:#9400D3 ;");
+                        node.setStyle(backgroundColor + "9400D3;");
                     else{
-                        node.setStyle("-fx-background-color:#000000;");
+                        node.setStyle(backgroundColor + "000000;");
             }
 
                 }
@@ -158,7 +159,7 @@ public class Main extends Application implements IGridMain {
         for (Node node : grid.getChildren()) {
             if (GridPane.getColumnIndex(node) == y && GridPane.getRowIndex(node) == x) {
                 System.out.println(x + " " + y);
-                node.setStyle("-fx-background-color:#" + color);
+                node.setStyle(backgroundColor + color);
                 break;
             }
         }
@@ -171,7 +172,7 @@ public class Main extends Application implements IGridMain {
 
             for (Node gridChild : grid.getChildren()) {
                 if (GridPane.getColumnIndex(gridChild) == y && GridPane.getRowIndex(gridChild) == x) {
-                    gridChild.setStyle("-fx-background-color:#" + "ff0000");
+                    gridChild.setStyle(backgroundColor + "ff0000");
                 }
             }
         }

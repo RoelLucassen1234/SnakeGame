@@ -4,6 +4,7 @@
     <modules>
       <module fileurl="file://$PROJECT_DIR$/Client/Client.iml" filepath="$PROJECT_DIR$/Client/Client.iml" />
       <module fileurl="file://$PROJECT_DIR$/SnakeRemastered.iml" filepath="$PROJECT_DIR$/SnakeRemastered.iml" />
+      <module fileurl="file://$PROJECT_DIR$/SnakeRestServer/SnakeRestServer.iml" filepath="$PROJECT_DIR$/SnakeRestServer/SnakeRestServer.iml" />
       <module fileurl="file://$PROJECT_DIR$/WebSockets/WebSockets.iml" filepath="$PROJECT_DIR$/WebSockets/WebSockets.iml" />
     </modules>
   </component>
