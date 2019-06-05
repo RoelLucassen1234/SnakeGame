@@ -3,9 +3,12 @@ package restLogic;
 import Models.GameResult;
 import Models.PlayerScore;
 import restData.ScoreDal;
+import restInterface.IScoreDal;
+
+import java.util.List;
 
 public class ScoreLogic {
-    private ScoreDal iScoreDal;
+    private IScoreDal iScoreDal;
 
     public ScoreLogic() {
         iScoreDal = new ScoreDal();
@@ -20,9 +23,13 @@ public class ScoreLogic {
     }
 
 
-    public PlayerScore getScoreboard(String user) {
-            return iScoreDal.getGameResult(user);
+    public PlayerScore getScoreboardOfUser(String user) {
+        return iScoreDal.getGameResult(user);
 
+    }
+
+    public List<PlayerScore> getScoreboard() {
+        return iScoreDal.getAllScoresFromUsers();
     }
 
 }

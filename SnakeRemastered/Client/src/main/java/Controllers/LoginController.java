@@ -1,6 +1,7 @@
 package Controllers;
 
 
+import Interface.IloginClient;
 import Models.User;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -22,7 +23,7 @@ public class LoginController{
     public Button logInButton;
 
     private Stage stage;
-    private SnakeLoginClient client = new SnakeLoginClient();
+    private IloginClient client = new SnakeLoginClient();
 
 
     @FXML
@@ -57,7 +58,7 @@ public class LoginController{
         MenuController controller = fxmlLoader.<MenuController>getController();
         controller.setName(user.getUsername());
         Scene scene = new Scene(root);
-        stage = new Stage();
+        stage = (Stage) logInButton.getScene().getWindow();
         stage.setScene(scene);
         stage.show();
 

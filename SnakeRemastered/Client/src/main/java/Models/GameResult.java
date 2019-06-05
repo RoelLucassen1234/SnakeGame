@@ -6,12 +6,12 @@ public class GameResult {
 
     }
 
-    public GameResult(String username, boolean win) {
+    public GameResult(String username, int win) {
         this.username = username;
         this.win = win;
     }
 
-    public boolean isWin() {
+    public int isWin() {
         return win;
     }
 
@@ -23,10 +23,10 @@ public class GameResult {
         this.username = username;
     }
 
-    public void setWin(boolean win) {
+    public void setWin(int win) {
         this.win = win;
     }
 
     String username;
-    boolean win;
+    int win;
 }

@@ -5,6 +5,7 @@ import Interface.IGameClient;
 import Interface.IPlayerLogic;
 import Models.Player;
 
+import java.io.IOException;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -52,7 +53,11 @@ public class PlayerLogic implements IPlayerLogic {
         timer.scheduleAtFixedRate(new TimerTask() {
             @Override
             public void run() {
-                movement.move(playerInfo);
+                try {
+                    movement.move(playerInfo);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
             }
         }, 400, movementspeed);
     }
@@ -71,9 +76,13 @@ public class PlayerLogic implements IPlayerLogic {
         timer.scheduleAtFixedRate(new TimerTask() {
             @Override
             public void run() {
-                movement.move(playerInfo);
+                try {
+                    movement.move(playerInfo);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
             }
-        }, 400, movementspeed);
+        }, 500, movementspeed);
     }
 
     @Override

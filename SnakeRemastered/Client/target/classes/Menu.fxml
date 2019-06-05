@@ -7,8 +7,8 @@
 
 <AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controllers.MenuController">
    <children>
-      <Button fx:id="btnMultiplayer" layoutX="196.0" layoutY="153.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="135.0" text="Multiplayer" />
-      <Button fx:id="btnSinglePlayer" layoutX="196.0" layoutY="104.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="135.0" text="SinglePlayer" />
+      <Button fx:id="btnMultiplayer" layoutX="196.0" layoutY="153.0" mnemonicParsing="false" onAction="#multiplayer" prefHeight="25.0" prefWidth="135.0" text="Multiplayer" />
+      <Button fx:id="btnSinglePlayer" layoutX="196.0" layoutY="104.0" mnemonicParsing="false" onAction="#singleplayer" prefHeight="25.0" prefWidth="135.0" text="SinglePlayer" />
       <Button fx:id="btnScoreBoard" layoutX="196.0" layoutY="200.0" mnemonicParsing="false" onAction="#goToScore" prefHeight="25.0" prefWidth="135.0" text="ScoreBoard" />
       <Button fx:id="btnLogout" layoutX="196.0" layoutY="310.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="135.0" text="Logout" />
       <Label fx:id="lbWelcomeBack" layoutX="89.0" layoutY="21.0" text="Welcome back: ">

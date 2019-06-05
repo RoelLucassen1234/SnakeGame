@@ -8,6 +8,8 @@ import controller.UserController;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.List;
+
 public class RestResponseHelper {
 
     private static final Logger log = LoggerFactory.getLogger(UserController.class);
@@ -43,6 +45,13 @@ public class RestResponseHelper {
     public static String getPlayerScore(PlayerScore playerScore){
         SnakeRestResponse response = new SnakeRestResponse();
         response.setPlayerScore(playerScore);
+        String output = gson.toJson(response);
+        log.info(serverResponse, output);
+        return output;
+    }
+    public static String getPlayerScores(List<PlayerScore> playerScores){
+        SnakeRestResponse response = new SnakeRestResponse();
+        response.setPlayerScores(playerScores);
         String output = gson.toJson(response);
         log.info(serverResponse, output);
         return output;

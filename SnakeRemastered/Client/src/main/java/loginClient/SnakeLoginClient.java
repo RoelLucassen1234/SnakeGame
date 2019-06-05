@@ -1,6 +1,8 @@
 package loginClient;
 
 import Interface.IRESTRequests;
+import Interface.IScoreClient;
+import Interface.IloginClient;
 import Models.PlayerScore;
 import Models.SnakeRestResponse;
 import Models.User;
@@ -20,9 +22,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
+import java.util.List;
 
 
-public class SnakeLoginClient implements IRESTRequests {
+public class SnakeLoginClient implements IRESTRequests, IloginClient, IScoreClient {
     private final Logger log = LoggerFactory.getLogger(SnakeLoginClient.class);
 
     private static final String url = "http://localhost:8090";
@@ -87,6 +90,12 @@ public class SnakeLoginClient implements IRESTRequests {
         String queryPost = "/score/" + user;
         SnakeRestResponse response = executeQueryGet(queryPost);
         return response.getPlayerScore();
+    }
+
+    public List<PlayerScore> getAllPlayerScores(){
+        String queryPost = "/score/users";
+        SnakeRestResponse response = executeQueryGet(queryPost);
+        return response.getPlayerScores();
     }
 
 

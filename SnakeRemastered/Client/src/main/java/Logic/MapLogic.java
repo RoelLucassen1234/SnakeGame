@@ -27,6 +27,12 @@ public class MapLogic {
         this.random = new Random(0);
         createMap(test);
     }
+    public MapLogic(int maxSize, int column, boolean test, long seed) {
+        this.totalGrids = maxSize;
+        this.column = column;
+        this.random = new Random(seed);
+        createMap(test);
+    }
 
     public int getTotalGrids() {
         return totalGrids;
@@ -63,7 +69,7 @@ public class MapLogic {
     private void createPlayMap() {
         TileObject object;
         for (int i = 0; i < totalGrids; i++) {
-            if (this.random.nextInt(8) == 33)
+            if (this.random.nextInt(12) == 4)
                 object = TileObject.WALL;
             else if (this.random.nextInt(40) == 2)
                 object = TileObject.POWERUP;

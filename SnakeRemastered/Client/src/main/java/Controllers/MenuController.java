@@ -8,6 +8,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.stage.Stage;
+import sample.Main;
 
 import java.io.IOException;
 
@@ -47,4 +48,21 @@ public class MenuController {
 
 
     }
+
+    @FXML
+    public void singleplayer(ActionEvent actionEvent) throws Exception {
+        Main main = new Main();
+        main.isSingleplayer(true);
+        main.start(new Stage());
+
+    }
+
+    @FXML
+    public void multiplayer(ActionEvent actionEvent) throws Exception {
+        Main main = new Main();
+        main.isSingleplayer(false);
+        main.start(new Stage());
+
+    }
+
 }

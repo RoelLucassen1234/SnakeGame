@@ -9,6 +9,7 @@ import Models.Graph;
 import Models.Player;
 import Models.Vertex;
 
+import java.io.IOException;
 import java.util.*;
 
 public class AiLogic implements Iplayer {
@@ -199,7 +200,7 @@ public class AiLogic implements Iplayer {
                 int destinationId = -1;
                 List<Vertex> vertexList = calculatePath();
                if (vertexList != null)
-                if (vertexList.get(1) != null) {
+
                         destinationId = vertexList.get(1).getIdNumber();
                         if (player.getCurrentPoint() + 1 == destinationId) {
                             player.setDirection(Direction.RIGHT);
@@ -211,9 +212,13 @@ public class AiLogic implements Iplayer {
                             player.setDirection(Direction.DOWN);
                         }
 
+                try {
                     movement.move(opponent);
+                } catch (IOException e) {
+                    e.printStackTrace();
                 }
             }
+
         }, 500, movementspeed);
     }
 
