@@ -21,7 +21,7 @@ public class UserLogic {
         if (password.length() < 8) {
             return false;
         }
-        if (iUserDal.getByUsername(username)){
+        if (iUserDal.getByUsername(username)) {
             return false;
         }
 
@@ -30,14 +30,12 @@ public class UserLogic {
     }
 
 
-    public boolean login(String username, String password) {
+    public User login(String username, String password) {
 
         if (username != null && password != null) {
-            if (iUserDal.Login(new User(username, password)) != null)
-                return true;
+            return iUserDal.Login(new User(username, password));
         }
-        return false;
-        }
-
+        return null;
     }
+}
 

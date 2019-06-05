@@ -2,11 +2,13 @@ package restLogic;
 
 import Models.GameResult;
 import Models.PlayerScore;
-import Models.User;
 import restData.ScoreDal;
+import restInterface.IScoreDal;
+
+import java.util.List;
 
 public class ScoreLogic {
-    private ScoreDal iScoreDal;
+    private IScoreDal iScoreDal;
 
     public ScoreLogic() {
         iScoreDal = new ScoreDal();
@@ -14,17 +16,17 @@ public class ScoreLogic {
 
 
     public boolean addbattleResult(GameResult result) {
-
-        if (result.getUsername() != null)
-            return this.iScoreDal.create(result);
-        return false;
+        return this.iScoreDal.create(result);
     }
 
 
-    public PlayerScore getScoreboard(User user) {
-        if (user.getPassword() != null && user.getUsername() != null)
-            return iScoreDal.getGameResult(user);
-        return null;
+    public PlayerScore getScoreboardOfUser(String user) {
+        return iScoreDal.getGameResult(user);
+
+    }
+
+    public List<PlayerScore> getScoreboard() {
+        return iScoreDal.getAllScoresFromUsers();
     }
 
 }

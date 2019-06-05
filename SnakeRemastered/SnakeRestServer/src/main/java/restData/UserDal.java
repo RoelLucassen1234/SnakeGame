@@ -42,13 +42,13 @@ public class UserDal implements IUserDal {
         try {
             sqlConnector.open();
 
-            String statement = "Select * FROM user \n" +
-                    " WHERE user.username = '" + user.getUsername() +"' AND user.password = '"+ user.getPassword() +"'";
+            String statement = "Select username, id as id FROM user \n" +
+                    " WHERE username = '" + user.getUsername() +"' AND password = '"+ user.getPassword() +"'";
 
             ResultSet rs = sqlConnector.executeQuery(sqlConnector.getStatement(statement));
           
             while (rs.next()) {
-                retrievedUser = new User(rs.getString("username"),rs.getString("password"));
+                retrievedUser = new User(rs.getString(1),rs.getInt(2));
             }
 
 

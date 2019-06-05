@@ -1,5 +1,10 @@
 package loginClient;
 
+import Interface.IRESTRequests;
+import Interface.IScoreClient;
+import Interface.IloginClient;
+import Models.GameResult;
+import Models.PlayerScore;
 import Models.SnakeRestResponse;
 import Models.User;
 import com.google.gson.Gson;
@@ -18,12 +23,13 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
+import java.util.List;
 
 
-public class SnakeLoginClient {
+public class SnakeLoginClient implements IRESTRequests, IloginClient, IScoreClient {
     private final Logger log = LoggerFactory.getLogger(SnakeLoginClient.class);
 
-    private static final String url = "http://localhost:8090/user";
+    private static final String url = "http://localhost:8090";
 
     private final Gson gson = new Gson();
 
@@ -39,7 +45,7 @@ public class SnakeLoginClient {
         }
         return instance;
     }
-    public SnakeRestResponse executeQueryPost(User userRequest, String queryPost) {
+    public SnakeRestResponse executeQueryPost(Object object, String queryPost) {
 
         // Build the query for the REST service
         final String query = url + queryPost;
@@ -50,10 +56,11 @@ public class SnakeLoginClient {
         request.addHeader("Content-Type", "application/json");
         request.addHeader("Accept", "application/json");
         StringEntity params;
-        params = new StringEntity(gson.toJson(userRequest), ContentType.APPLICATION_JSON);
+        params = new StringEntity(gson.toJson(object), ContentType.APPLICATION_JSON);
         request.setEntity(params);
         return executeHttpUriRequest(request);
     }
+
     public SnakeRestResponse executeQueryGet(String queryGet) {
 
         // Build the query for the REST service
@@ -68,15 +75,35 @@ public class SnakeLoginClient {
 
     public User login(String username, String password) {
         User userRequest = new User(username, password);
-        String queryPost = "/login";
+        String queryPost = "/user/login";
         SnakeRestResponse response = executeQueryPost(userRequest, queryPost);
         return response.getUser();
     }
 
     public boolean register(String username, String password) {
         User userRequest = new User(username, password);
-        String queryPost = "/register";
+        String queryPost = "/user/register";
         SnakeRestResponse response = executeQueryPost(userRequest, queryPost);
+        return response.getSuccess();
+    }
+
+    public PlayerScore getScore(String user){
+
+        String queryPost = "/score/" + user;
+        SnakeRestResponse response = executeQueryGet(queryPost);
+        return response.getPlayerScore();
+    }
+
+    public List<PlayerScore> getAllPlayerScores(){
+        String queryPost = "/score/list";
+        SnakeRestResponse response = executeQueryGet(queryPost);
+        return response.getPlayerScores();
+    }
+
+    public boolean addScore(int win, int playerNr){
+        GameResult result = new GameResult(playerNr, win);
+        String queryPost = "/score/addResult";
+        SnakeRestResponse response = executeQueryPost(result, queryPost);
         return response.getSuccess();
     }
 

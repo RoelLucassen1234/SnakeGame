@@ -2,14 +2,16 @@ package restData;
 
 import Models.GameResult;
 import Models.PlayerScore;
-import Models.User;
+import restInterface.IScoreDal;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-public class ScoreDal {
+public class ScoreDal implements IScoreDal {
     private SQLConnector sqlConnector;
     private final static Logger LOGGER = Logger.getLogger(ScoreDal.class.getName());
 
@@ -20,9 +22,9 @@ public class ScoreDal {
     public boolean create(GameResult user) {
         try {
 
-            //TODO MAAK DE STATEMENT CORRECT!!!!!
+
             sqlConnector.open();
-            PreparedStatement statement = sqlConnector.getStatement("INSERT INTO score (userId,win)" + " VALUES ('" + user.getUsername() + "','" + user.isWin() + "')");
+            PreparedStatement statement = sqlConnector.getStatement("INSERT INTO score (userId,win)" + " VALUES ('" + user.getPlayerNr() + "','" + user.isWin() + "')");
             sqlConnector.executeUpdate(statement);
 
         } catch (Exception ex) {
@@ -36,13 +38,15 @@ public class ScoreDal {
     }
 
 
-    public PlayerScore getGameResult(User user) {
+    public PlayerScore getGameResult(String user) {
         PlayerScore retrievedScore = null;
         try {
             sqlConnector.open();
 
-            String statement = "Select * FROM user \n" +
-                    " WHERE user.username = '" + user.getUsername() +"' AND user.password = '"+ user.getPassword() +"'";
+            String statement =
+                    "select sum(win = 1) as wins, sum(win = 0) as losses\n" +
+                    ", u.username as username FROM Score s INNER JOIN user u ON u.id = s.userId\n" +
+                    "   WHERE u.username = \"" + user + "\"";
 
             ResultSet rs = sqlConnector.executeQuery(sqlConnector.getStatement(statement));
 
@@ -59,5 +63,30 @@ public class ScoreDal {
             sqlConnector.close();
         }
         return retrievedScore ;
+    }
+
+    public List<PlayerScore> getAllScoresFromUsers(){
+        List<PlayerScore> retrievedScores = new ArrayList<>();
+        try {
+            sqlConnector.open();
+
+            String statement = "select sum(win = 1) as wins, sum(win = 0) as losses , u.username as username FROM Score s INNER JOIN user u ON u.id = s.userId";
+
+            ResultSet rs = sqlConnector.executeQuery(sqlConnector.getStatement(statement));
+
+            while (rs.next()) {
+               PlayerScore player = new PlayerScore(rs.getInt("wins"),rs.getInt("losses"), rs.getString("username"));
+               retrievedScores.add(player);
+            }
+
+
+        } catch (Exception ex) {
+            LOGGER.log(Level.WARNING, ex.getMessage());
+
+        } finally {
+
+            sqlConnector.close();
+        }
+        return retrievedScores ;
     }
 }

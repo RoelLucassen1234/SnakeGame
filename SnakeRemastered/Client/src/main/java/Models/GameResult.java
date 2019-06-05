@@ -6,27 +6,25 @@ public class GameResult {
 
     }
 
-    public GameResult(String username, boolean win) {
-        this.username = username;
+    public GameResult(int playerNr, int win) {
+        this.playerNr = playerNr;
         this.win = win;
     }
 
-    public boolean isWin() {
+    public int isWin() {
         return win;
     }
 
-    public String getUsername() {
-        return username;
-    }
 
-    public void setUsername(String username) {
-        this.username = username;
-    }
 
-    public void setWin(boolean win) {
+    public void setWin(int win) {
         this.win = win;
     }
 
-    String username;
-    boolean win;
+    public int getPlayerNr() {
+        return playerNr;
+    }
+
+    private int playerNr;
+    private int win;
 }

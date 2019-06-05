@@ -6,6 +6,8 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.io.IOException;
+
 public class PlayerLogicTest {
 
     private GameClient gameClient;
@@ -60,7 +62,7 @@ public class PlayerLogicTest {
     }
 
     @Test
-    public void PlayerLosesLive(){
+    public void PlayerLosesLive() throws IOException {
         int playerLives = player.getPlayerLife();
 
         player.playerDies();
@@ -69,7 +71,7 @@ public class PlayerLogicTest {
     }
 
     @Test
-    public void movePlayer() throws InterruptedException {
+    public void movePlayer() throws InterruptedException, IOException {
         int spawnpoint = 0;
         player.setCurrentPoint(spawnpoint);
         player.setReady(true);
@@ -83,7 +85,7 @@ public class PlayerLogicTest {
     }
 
     @Test
-    public void setMovement(){
+    public void setMovement() throws IOException {
         int movement = player.getMovementSpeed();
         int speed = 700;
         player.setReady(true);

@@ -34,8 +34,9 @@ public class UserController {
     public Response Login(User user) {
 
         System.out.println("[Server getUser]");
-        if (userLogic.login(user.getUsername(), user.getPassword())){
-            return Response.status(200).entity(RestResponseHelper.getUser(user)).build();
+        User newUser = userLogic.login(user.getUsername(), user.getPassword());
+        if (newUser != null){
+            return Response.status(200).entity(RestResponseHelper.getUser(newUser)).build();
         }else{
             return Response.status(400).entity(RestResponseHelper.getSuccessResponse(false)).build();
         }

@@ -9,10 +9,7 @@ import org.slf4j.LoggerFactory;
 
 import javax.websocket.*;
 import javax.websocket.server.ServerEndpoint;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 // https://github.com/jetty-project/embedded-jetty-websocket-examples/tree/master/javax.websocket-example/src/main/java/org/eclipse/jetty/demo
 
@@ -106,12 +103,26 @@ public class CommunicatorServerWebSocket {
                     // Send the message to all clients that are subscribed to this property
                     if (propertySessions.get(property) != null) {
                         log.info("[WebSocket send] {} to:", jsonMessage);
-                        for (Session sess : propertySessions.get(property)) {
-                            // Use asynchronous communication
-                            log.info("\t\t >> Client associated with server side session ID: {}", sess.getId());
-                            sess.getAsyncRemote().sendText(jsonMessage);
+                        if(property.equals("CheckSeed")){
+                            if(propertySessions.get(property).size() == 1){
+                                CommunicatorData.setSeed(new Random().nextInt(1000));
+                            }
+                            // Return seed
+                            log.info("\t\t >> Client associated with server side session ID: {}", session.getId());
+                            CommunicatorWebSocketMessage message = new CommunicatorWebSocketMessage();
+                            message.setProperty("CheckSeed");
+                            message.setContent(Long.toString(CommunicatorData.getSeed()));
+                            message.setOperation(CommunicatorWebSocketMessageOperation.UPDATEPROPERTY);
+                            session.getAsyncRemote().sendText(gson.toJson(message));
                         }
-                        log.info("[WebSocket end sending message to subscribers]");
+                        else {
+                            for (Session sess : propertySessions.get(property)) {
+                                // Use asynchronous communication
+                                log.info("\t\t >> Client associated with server side session ID: {}", sess.getId());
+                                sess.getAsyncRemote().sendText(jsonMessage);
+                            }
+                            log.info("[WebSocket end sending message to subscribers]");
+                        }
                     }
                     break;
                 default:

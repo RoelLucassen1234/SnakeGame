@@ -1,15 +1,19 @@
 package sample;
 
+import Controllers.MenuController;
 import Enum.GamePhase;
 import Enum.TileObject;
 import Interface.IGridMain;
 import Logic.GameClient;
 import Models.Vertex;
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.event.EventHandler;
+import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.*;
@@ -17,6 +21,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.stage.Stage;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -24,18 +29,30 @@ public class Main extends Application implements IGridMain {
 
     int numCols;
     private GridPane grid;
+    private Stage stage;
     private GameClient client;
     private final String backgroundColor = "-fx-background-color:#";
+    private int playernr;
+    private String username;
+    private boolean singleplayer;
+
+    public void isSingleplayer(boolean singleplayer, int playerNr, String username) {
+        this.singleplayer = singleplayer;
+        this.playernr = playerNr;
+        this.username = username;
+
+    }
 
 
     @Override
     public void start(Stage primaryStage) throws Exception {
 
+        stage = primaryStage;
         numCols = 50;
         int numRows = 50;
 
         ArrayList<String> input = new ArrayList<>();
-        client = new GameClient(false, numCols, numRows, this);
+        client = new GameClient(singleplayer, numCols, numRows, this, playernr);
 
 
         BooleanProperty[][] switches = new BooleanProperty[numCols][numRows];
@@ -48,6 +65,7 @@ public class Main extends Application implements IGridMain {
         grid = createGrid(switches);
         generateObjects(client.getObjects(TileObject.POWERUP));
         generateObjects(client.getObjects(TileObject.WALL));
+        generateObjects(client.getObjects(TileObject.WALKABLE));
 
 
         StackPane root = new StackPane(grid);
@@ -88,15 +106,15 @@ public class Main extends Application implements IGridMain {
         cell.getChildren().clear();
         Circle circle;
 
-        if (client.getPhase() == GamePhase.PREPERATION){
-           if(client.setSpawnPoint(id)) {
-               circle = new Circle(10, Color.GREEN);
-               circle.visibleProperty().bind(cellswitch);
-               cellswitch.set(!cellswitch.get());
-               cell.getChildren().add(circle);
-               cell.getStyleClass().add("cell");
+        if (client.getPhase() == GamePhase.PREPERATION) {
+            if (client.setSpawnPoint(id)) {
+                circle = new Circle(10, Color.GREEN);
+                circle.visibleProperty().bind(cellswitch);
+                cellswitch.set(!cellswitch.get());
+                cell.getChildren().add(circle);
+                cell.getStyleClass().add("cell");
 
-           }
+            }
         }
     }
 
@@ -110,13 +128,15 @@ public class Main extends Application implements IGridMain {
                 if (GridPane.getColumnIndex(node) == y && GridPane.getRowIndex(node) == x)
                     if (vertex.getStatus() == TileObject.POWERUP)
                         node.setStyle(backgroundColor + "9400D3;");
-                    else{
+                    else if (vertex.getStatus() == TileObject.WALL) {
                         node.setStyle(backgroundColor + "000000;");
-            }
+                    } else {
+                        node.setStyle(backgroundColor + "ffffffff;");
+                    }
 
-                }
             }
         }
+    }
 
 
     private GridPane createGrid(BooleanProperty[][] switches) {
@@ -165,31 +185,53 @@ public class Main extends Application implements IGridMain {
         }
     }
 
-    public void removeTerritory(List<Vertex> nodes){
-        for (Vertex node: nodes) {
+    public void removeTerritory(List<Vertex> nodes) {
+        for (Vertex node : nodes) {
             int x = (int) Math.floor((double) node.getIdNumber() / numCols);
             int y = node.getIdNumber() - (x * numCols);
-
             for (Node gridChild : grid.getChildren()) {
                 if (GridPane.getColumnIndex(gridChild) == y && GridPane.getRowIndex(gridChild) == x) {
-                    gridChild.setStyle(backgroundColor + "ff0000");
+                    gridChild.setStyle(backgroundColor + "ffffffff");
                 }
             }
         }
     }
 
     public void drawPositionOpponent(int totalnumber) {
-        for (Node node : grid.getChildren()) {
+
+        for (Node gridChild : grid.getChildren()) {
             int x = (int) Math.floor((double) totalnumber / numCols);
             int y = totalnumber - (x * numCols);
-
-            for (Node gridChild : grid.getChildren()) {
-                if (GridPane.getColumnIndex(gridChild) == y && GridPane.getRowIndex(gridChild) == x) {
-                    gridChild.setStyle("-fx-background-color:#" + "ff0000");
-                    break;
-                }
+            if (GridPane.getColumnIndex(gridChild) == y && GridPane.getRowIndex(gridChild) == x) {
+                gridChild.setStyle("-fx-background-color:#" + "ff0000");
+                break;
             }
         }
+    }
+
+    public void goBack() throws IOException {
+
+        Platform.runLater(new Runnable() {
+            @Override
+            public void run() {
+
+                FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/Menu.fxml"));
+
+                Parent root = null;
+                try {
+                    root = fxmlLoader.load();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                MenuController controller = fxmlLoader.<MenuController>getController();
+                controller.setName(username, client.getPlayer().getPlayerNumber());
+                Scene scene = new Scene(root);
+                stage.setScene(scene);
+                stage.show();
+
+            }
+        });
+
     }
 
 

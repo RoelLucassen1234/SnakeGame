@@ -1,10 +1,13 @@
 package Models;
 
+import java.util.List;
+
 public class SnakeRestResponse {
 
     private boolean success;
     private User user;
     private PlayerScore playerScore;
+    private List<PlayerScore> playerScores;
 
     public boolean isSuccess() {
         return success;
@@ -30,4 +33,12 @@ public class SnakeRestResponse {
         this.success = success;
     }
     public boolean getSuccess(){return success;}
+
+    public List<PlayerScore> getPlayerScores() {
+        return playerScores;
+    }
+
+    public void setPlayerScores(List<PlayerScore> playerScores) {
+        this.playerScores = playerScores;
+    }
 }

@@ -17,4 +17,7 @@ module Client {
     exports Models;
     exports CommunicatorClient;
     exports sample;
+
+    opens Controllers;
+    opens Models;
 }

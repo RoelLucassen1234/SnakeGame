@@ -1,5 +1,6 @@
 package Controllers;
 
+import Interface.IloginClient;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -21,7 +22,7 @@ public class RegisterController {
     public Button btnBack;
 
     private Stage stage;
-    private SnakeLoginClient client = new SnakeLoginClient();
+    private IloginClient client = new SnakeLoginClient();
 
     @FXML
     public void registerUser(ActionEvent actionEvent) throws IOException{
