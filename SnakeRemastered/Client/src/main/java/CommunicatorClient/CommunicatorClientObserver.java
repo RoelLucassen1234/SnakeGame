@@ -44,6 +44,17 @@ public class CommunicatorClientObserver implements Observer {
         }
     }
 
+    public void sendDeath(int playerNr) {
+        if (communicator != null) {
+            String content = gson.toJson(playerNr);
+            CommunicatorMessage message = new CommunicatorMessage();
+            message.setProperty(properties[3]);
+            message.setContent(content);
+            communicator.update(message);
+        }
+    }
+
+
     public void checkSeed(int playerNr) {
         if (communicator != null) {
             String content = gson.toJson(playerNr);
@@ -91,7 +102,8 @@ public class CommunicatorClientObserver implements Observer {
             Position position = gson.fromJson(content, Position.class);
             game.receivePosition(position.getPlayerNr(), position.getPosition());
         } else if (property.matches(properties[3])) {
-
+            int playerNr = gson.fromJson(content, Integer.class);
+            game.receiveDeathCheck(playerNr);
         }
     }
 }

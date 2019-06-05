@@ -9,5 +9,5 @@ public interface IGameClient {
     void receivePosition(int playernumber, int position);
     void getMultiplayerSeed();
     void receiveSeedCheck(long seed);
-
+    void receiveDeathCheck(int playerNr);
 }

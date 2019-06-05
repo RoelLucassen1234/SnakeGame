@@ -19,4 +19,5 @@ module Client {
     exports sample;
 
     opens Controllers;
+    opens Models;
 }

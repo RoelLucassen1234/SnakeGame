@@ -24,7 +24,7 @@ public class ScoreDal implements IScoreDal {
 
 
             sqlConnector.open();
-            PreparedStatement statement = sqlConnector.getStatement("INSERT INTO score (userId,win)" + " VALUES ('" + user.getUsername() + "','" + user.isWin() + "')");
+            PreparedStatement statement = sqlConnector.getStatement("INSERT INTO score (userId,win)" + " VALUES ('" + user.getPlayerNr() + "','" + user.isWin() + "')");
             sqlConnector.executeUpdate(statement);
 
         } catch (Exception ex) {
@@ -43,8 +43,8 @@ public class ScoreDal implements IScoreDal {
         try {
             sqlConnector.open();
 
-            String statement = "select\n" +
-                    "    select sum(win = 1) as wins, sum(win = 0) as losses\n" +
+            String statement =
+                    "select sum(win = 1) as wins, sum(win = 0) as losses\n" +
                     ", u.username as username FROM Score s INNER JOIN user u ON u.id = s.userId\n" +
                     "   WHERE u.username = \"" + user + "\"";
 
@@ -70,9 +70,7 @@ public class ScoreDal implements IScoreDal {
         try {
             sqlConnector.open();
 
-            String statement = "select sum(win = 1) as wins, sum(win = 0) as losses\n" +
-                    ", u.username as username FROM Score s INNER JOIN user u ON u.id = s.userId\n" +
-                    "  ";
+            String statement = "select sum(win = 1) as wins, sum(win = 0) as losses , u.username as username FROM Score s INNER JOIN user u ON u.id = s.userId";
 
             ResultSet rs = sqlConnector.executeQuery(sqlConnector.getStatement(statement));
 

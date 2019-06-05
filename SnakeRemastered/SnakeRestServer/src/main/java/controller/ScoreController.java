@@ -16,15 +16,15 @@ public class ScoreController {
     ScoreLogic scoreLogic = new ScoreLogic();
 
     @POST
-    @Path("/add")
+    @Path("/addResult")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response addBatleResult(GameResult user) {
+    public Response addGameResult(GameResult user) {
 
         System.out.println("[Server postUser]");
         if (scoreLogic.addbattleResult(user)) {
             return Response.status(200).entity(RestResponseHelper.getSuccessResponse(true)).build();
         } else {
-            return Response.status(400).entity(RestResponseHelper.getErrorResponseString()).build();
+            return Response.status(400).entity(RestResponseHelper.getSuccessResponse(false)).build();
         }
     }
 
@@ -38,7 +38,8 @@ public class ScoreController {
         if (playerScore != null) {
             return Response.status(200).entity(RestResponseHelper.getPlayerScore(playerScore)).build();
         } else {
-            return Response.status(200).entity(RestResponseHelper.getSuccessResponse(false)).build();
+            playerScore = new PlayerScore(0,0);
+            return Response.status(200).entity(RestResponseHelper.getPlayerScore(playerScore)).build();
         }
     }
 

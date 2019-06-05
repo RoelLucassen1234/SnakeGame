@@ -24,7 +24,7 @@
          <font>
             <Font size="49.0" />
          </font></Label>
-      <Button layoutX="209.0" layoutY="344.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="178.0" text="Go Back" />
+      <Button fx:id="btnBack" layoutX="209.0" layoutY="344.0" mnemonicParsing="false" onAction="#goBack" prefHeight="25.0" prefWidth="178.0" text="Go Back" />
       <ListView fx:id="lvScores" layoutX="77.0" layoutY="132.0" prefHeight="200.0" prefWidth="429.0" />
    </children>
 </AnchorPane>

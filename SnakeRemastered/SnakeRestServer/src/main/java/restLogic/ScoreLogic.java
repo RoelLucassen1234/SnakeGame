@@ -16,10 +16,7 @@ public class ScoreLogic {
 
 
     public boolean addbattleResult(GameResult result) {
-
-        if (result.getUsername() != null)
-            return this.iScoreDal.create(result);
-        return false;
+        return this.iScoreDal.create(result);
     }
 
 

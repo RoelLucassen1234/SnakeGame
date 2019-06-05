@@ -56,7 +56,7 @@ public class LoginController{
 
         Parent root = fxmlLoader.load();
         MenuController controller = fxmlLoader.<MenuController>getController();
-        controller.setName(user.getUsername());
+        controller.setName(user.getUsername(), user.getPlayerNr());
         Scene scene = new Scene(root);
         stage = (Stage) logInButton.getScene().getWindow();
         stage.setScene(scene);

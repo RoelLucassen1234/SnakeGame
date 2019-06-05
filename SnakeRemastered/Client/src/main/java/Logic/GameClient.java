@@ -9,6 +9,7 @@ import Interface.IGridMain;
 import Interface.IPlayerLogic;
 import Interface.Iplayer;
 import Models.Vertex;
+import loginClient.SnakeLoginClient;
 
 import java.io.IOException;
 import java.util.List;
@@ -18,6 +19,7 @@ import java.util.stream.Collectors;
 public class GameClient implements IGameClient {
     private IPlayerLogic player;
     private Iplayer opponent;
+    private SnakeLoginClient restClient;
 
     private GamePhase phase;
     private MapLogic map;
@@ -37,16 +39,18 @@ public class GameClient implements IGameClient {
         return phase;
     }
 
-    public GameClient(boolean singlePlayer, int column1, int column2, IGridMain main) {
+    public GameClient(boolean singlePlayer, int column1, int column2, IGridMain main, int playerNr) {
         this.singlePlayer = singlePlayer;
-        player = new PlayerLogic(random.nextInt(10000), this);
+        player = new PlayerLogic(playerNr, this);
         if (singlePlayer) {
             map = new MapLogic((column1 * column2), column1, false);
             boardMap = main;
             phase = GamePhase.PREPERATION;
         } else {
             clientObserver = new CommunicatorClientObserver(this);
+            restClient = new SnakeLoginClient();
             getMultiplayerSeed();
+            System.out.println(player.getPlayerNumber());
             boardMap = main;
             this.column = column1;
         }
@@ -72,11 +76,13 @@ public class GameClient implements IGameClient {
         if (map.getSpecificNode(tileId).getStatus() != TileObject.WALL && map.getSpecificNode(tileId).getStatus() != TileObject.POWERUP) {
             player.setCurrentPoint(tileId);
             if (singlePlayer) {
+                phase = GamePhase.ONGOING;
                 startGame();
                 return true;
             } else {
                 player.setReady(true);
                 clientObserver.sendReady(getPlayer().getPlayerNumber());
+                phase = GamePhase.ONGOING;
 
                 return true;
             }
@@ -99,7 +105,7 @@ public class GameClient implements IGameClient {
     }
 
     @Override
-    public void move(Iplayer player)  {
+    public void move(Iplayer player) {
 
         int location = player.getCurrentLocation();
         Direction direction = player.getDirection();
@@ -130,11 +136,11 @@ public class GameClient implements IGameClient {
             if (singlePlayer) {
                 getAi().playerDies();
 
-                    goBack();
-
             } else {
-
+                restClient.addScore(0, player.getPlayerNumber());
+                clientObserver.sendDeath(player.getPlayerNumber());
             }
+            goBack();
         } else {
             map.getSpecificNode(player.getCurrentLocation()).setStatus(TileObject.WALL);
             player.setCurrentPoint(node.getIdNumber());
@@ -222,8 +228,16 @@ public class GameClient implements IGameClient {
         phase = GamePhase.PREPERATION;
 
     }
+    public void receiveDeathCheck(int playerNr){
+        if (playerNr != player.getPlayerNumber()){
+            restClient.addScore(1, player.getPlayerNumber());
+            player.playerDies();
+            boardMap.removeTerritory(map.getAllNodesTouchedByPlayer(playerNr));
+            goBack();
+        }
+    }
 
-    private void goBack(){
+    private void goBack() {
         try {
             boardMap.goBack();
         } catch (IOException e) {

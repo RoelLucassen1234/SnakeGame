@@ -3,6 +3,7 @@ package loginClient;
 import Interface.IRESTRequests;
 import Interface.IScoreClient;
 import Interface.IloginClient;
+import Models.GameResult;
 import Models.PlayerScore;
 import Models.SnakeRestResponse;
 import Models.User;
@@ -44,7 +45,7 @@ public class SnakeLoginClient implements IRESTRequests, IloginClient, IScoreClie
         }
         return instance;
     }
-    public SnakeRestResponse executeQueryPost(User userRequest, String queryPost) {
+    public SnakeRestResponse executeQueryPost(Object object, String queryPost) {
 
         // Build the query for the REST service
         final String query = url + queryPost;
@@ -55,10 +56,11 @@ public class SnakeLoginClient implements IRESTRequests, IloginClient, IScoreClie
         request.addHeader("Content-Type", "application/json");
         request.addHeader("Accept", "application/json");
         StringEntity params;
-        params = new StringEntity(gson.toJson(userRequest), ContentType.APPLICATION_JSON);
+        params = new StringEntity(gson.toJson(object), ContentType.APPLICATION_JSON);
         request.setEntity(params);
         return executeHttpUriRequest(request);
     }
+
     public SnakeRestResponse executeQueryGet(String queryGet) {
 
         // Build the query for the REST service
@@ -93,9 +95,16 @@ public class SnakeLoginClient implements IRESTRequests, IloginClient, IScoreClie
     }
 
     public List<PlayerScore> getAllPlayerScores(){
-        String queryPost = "/score/users";
+        String queryPost = "/score/list";
         SnakeRestResponse response = executeQueryGet(queryPost);
         return response.getPlayerScores();
+    }
+
+    public boolean addScore(int win, int playerNr){
+        GameResult result = new GameResult(playerNr, win);
+        String queryPost = "/score/addResult";
+        SnakeRestResponse response = executeQueryPost(result, queryPost);
+        return response.getSuccess();
     }
 
 

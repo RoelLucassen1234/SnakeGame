@@ -32,10 +32,15 @@ public class Main extends Application implements IGridMain {
     private Stage stage;
     private GameClient client;
     private final String backgroundColor = "-fx-background-color:#";
+    private int playernr;
+    private String username;
     private boolean singleplayer;
 
-    public void isSingleplayer(boolean singleplayer) {
+    public void isSingleplayer(boolean singleplayer, int playerNr, String username) {
         this.singleplayer = singleplayer;
+        this.playernr = playerNr;
+        this.username = username;
+
     }
 
 
@@ -47,7 +52,7 @@ public class Main extends Application implements IGridMain {
         int numRows = 50;
 
         ArrayList<String> input = new ArrayList<>();
-        client = new GameClient(singleplayer, numCols, numRows, this);
+        client = new GameClient(singleplayer, numCols, numRows, this, playernr);
 
 
         BooleanProperty[][] switches = new BooleanProperty[numCols][numRows];
@@ -205,7 +210,7 @@ public class Main extends Application implements IGridMain {
     }
 
     public void goBack() throws IOException {
-    client = null;
+
         Platform.runLater(new Runnable() {
             @Override
             public void run() {
@@ -219,7 +224,7 @@ public class Main extends Application implements IGridMain {
                     e.printStackTrace();
                 }
                 MenuController controller = fxmlLoader.<MenuController>getController();
-                controller.setName("Unknown");
+                controller.setName(username, client.getPlayer().getPlayerNumber());
                 Scene scene = new Scene(root);
                 stage.setScene(scene);
                 stage.show();
