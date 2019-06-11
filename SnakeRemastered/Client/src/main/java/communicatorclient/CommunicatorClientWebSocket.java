@@ -16,7 +16,7 @@ import java.net.URISyntaxException;
 
 
 /**
- * Client-side implementation of abstract class Communicator using
+ * Client-side implementation of abstract class communicator using
  * WebSockets for communication.
  *
  * This code is based on the example code from:
@@ -186,7 +186,8 @@ public class CommunicatorClientWebSocket extends Communicator {
 
         } catch (IOException | URISyntaxException | DeploymentException ex) {
             // do something useful eventually
-            ex.printStackTrace();
+
+            log.info(ex.getMessage());
         }
     }
 
@@ -200,7 +201,7 @@ public class CommunicatorClientWebSocket extends Communicator {
 
         } catch (IOException ex){
             // do something useful eventually
-            ex.printStackTrace();
+           log.info(ex.getMessage());
         }
     }
 

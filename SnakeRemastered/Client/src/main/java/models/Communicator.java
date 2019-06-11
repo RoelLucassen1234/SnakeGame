@@ -5,7 +5,7 @@
  */
 package models;
 
-import Interface.ICommunicator;
+import interfaces.ICommunicator;
 
 import java.util.Observable;
 

@@ -13,7 +13,7 @@ module Client {
     exports controllers;
     exports logica;
     exports enums;
-    exports Interface;
+    exports interfaces;
     exports models;
     exports communicatorclient;
     exports sample;

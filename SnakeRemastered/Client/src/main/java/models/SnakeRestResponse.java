@@ -9,9 +9,6 @@ public class SnakeRestResponse {
     private PlayerScore playerScore;
     private List<PlayerScore> playerScores;
 
-    public boolean isSuccess() {
-        return success;
-    }
 
     public User getUser() {
         return user;

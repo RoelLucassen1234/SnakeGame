@@ -3,12 +3,12 @@ package models;
 public class Position {
     int playerNr;
 
-    public Position(int playerNr, int position) {
+    public Position(int playerNr, int playerPosition) {
         this.playerNr = playerNr;
-        this.position = position;
+        this.playerPosition = playerPosition;
     }
 
-    int position;
+    int playerPosition;
 
     public int getPlayerNr() {
         return playerNr;
@@ -18,11 +18,11 @@ public class Position {
         this.playerNr = playerNr;
     }
 
-    public int getPosition() {
-        return position;
+    public int getPlayerPosition() {
+        return playerPosition;
     }
 
-    public void setPosition(int position) {
-        this.position = position;
+    public void setPlayerPosition(int playerPosition) {
+        this.playerPosition = playerPosition;
     }
 }

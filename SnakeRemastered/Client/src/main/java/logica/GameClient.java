@@ -4,12 +4,14 @@ import communicatorclient.CommunicatorClientObserver;
 import enums.Direction;
 import enums.GamePhase;
 import enums.TileObject;
-import Interface.IGameClient;
-import Interface.IGridMain;
-import Interface.IPlayerLogic;
-import Interface.Iplayer;
+import interfaces.IGameClient;
+import interfaces.IGridMain;
+import interfaces.IPlayerLogic;
+import interfaces.Iplayer;
 import models.Vertex;
 import loginClient.SnakeLoginClient;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.util.List;
@@ -17,6 +19,7 @@ import java.util.Random;
 import java.util.stream.Collectors;
 
 public class GameClient implements IGameClient {
+    private final Logger log = LoggerFactory.getLogger(GameClient.class);
     private IPlayerLogic player;
     private Iplayer opponent;
     private SnakeLoginClient restClient;
@@ -28,8 +31,7 @@ public class GameClient implements IGameClient {
     private boolean opponentReady = false;
     private boolean singlePlayer;
     private int column;
-    private Random random = new Random();
-
+    private Random random;
 
 
 
@@ -50,7 +52,6 @@ public class GameClient implements IGameClient {
             clientObserver = new CommunicatorClientObserver(this);
             restClient = new SnakeLoginClient();
             getMultiplayerSeed();
-            System.out.println(player.getPlayerNumber());
             boardMap = main;
             this.column = column1;
         }
@@ -96,7 +97,7 @@ public class GameClient implements IGameClient {
             List<Vertex> spawnpoints = getObjects(TileObject.WALKABLE);
             Vertex vertex = spawnpoints.get(random.nextInt(spawnpoints.size()));
             opponent = new AiLogic(map.getTotalGrids(), map.getColumn(), map.getNodes(), vertex.getIdNumber(), this);
-            ((AiLogic) opponent).startGame();
+            (opponent).startGame();
             player.startGame();
         } else if (!singlePlayer) {
             player.startGame();
@@ -107,7 +108,7 @@ public class GameClient implements IGameClient {
     @Override
     public void move(Iplayer player) {
 
-        System.out.println("SPEED :" + player.getMovementSpeed());
+
         int location = player.getCurrentLocation();
         Direction direction = player.getDirection();
         Vertex node = new Vertex("", "s", 2, null);
@@ -128,8 +129,9 @@ public class GameClient implements IGameClient {
         }
 
 
-        if (node.getStatus() == TileObject.TERRITORY || node.getStatus() == TileObject.WALL) {
-            if (player.isPlayerAlive()) {
+        if (node.getStatus() == TileObject.TERRITORY || node.getStatus() == TileObject.WALL || node == null) {
+
+
                 player.playerDies();
                 if (boardMap != null) {
                     boardMap.removeTerritory(map.getAllNodesTouchedByPlayer(player.getPlayerNumber()));
@@ -140,18 +142,20 @@ public class GameClient implements IGameClient {
 
                 } else {
                     clientObserver.sendDeath(player.getPlayerNumber());
-
                 }
 
                 goBack();
-            }
+
         } else {
             map.getSpecificNode(player.getCurrentLocation()).setStatus(TileObject.WALL);
             player.setCurrentPoint(node.getIdNumber());
             node.setTouchedBy(player.getPlayerNumber());
-            if (boardMap != null) {
+
+           try{
                 boardMap.showPath(node, player.colorReturn());
-            }
+            }catch (Exception ex){
+               log.info(ex.getMessage());
+           }
 
             if (!singlePlayer) {
                 clientObserver.sendPosition(player.getPlayerNumber(), node.getIdNumber());
@@ -203,10 +207,10 @@ public class GameClient implements IGameClient {
         }
     }
 
-    public void receivePosition(int Playernumber, int position) {
-        if (player.getPlayerNumber() != Playernumber) {
+    public void receivePosition(int playerNumber, int position) {
+        if (player.getPlayerNumber() != playerNumber) {
             Vertex vertex = map.getSpecificNode(position);
-            vertex.setTouchedBy(Playernumber);
+            vertex.setTouchedBy(playerNumber);
             vertex.setStatus(TileObject.WALL);
             boardMap.drawPositionOpponent(position);
         }
@@ -225,9 +229,6 @@ public class GameClient implements IGameClient {
     }
 
     public void receiveSeedCheck(long seed) {
-
-
-        System.out.println(seed);
         map = new MapLogic((column * column), column, false, seed);
         phase = GamePhase.PREPERATION;
 
@@ -248,7 +249,7 @@ public class GameClient implements IGameClient {
         try {
             boardMap.goBack();
         } catch (IOException e) {
-            e.printStackTrace();
+            log.info(e.getMessage());
         }
     }
 }

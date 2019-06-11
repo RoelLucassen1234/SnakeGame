@@ -1,8 +1,8 @@
 package loginClient;
 
-import Interface.IRESTRequests;
-import Interface.IScoreClient;
-import Interface.IloginClient;
+import interfaces.IRESTRequests;
+import interfaces.IScoreClient;
+import interfaces.IloginClient;
 import models.GameResult;
 import models.PlayerScore;
 import models.SnakeRestResponse;

@@ -4,7 +4,6 @@ import enums.Direction;
 
 public class Player {
     private int playerNumber;
-    private int spawnPoint;
     private int currentPoint;
 
     public int getLives() {
@@ -39,7 +38,6 @@ public class Player {
 
     public Player(int playerNumber){
         this.playerNumber = playerNumber;
-        spawnPoint = -1;
         direction = Direction.DOWN;
         lives = 3;
         isReady = false;

@@ -1,7 +1,7 @@
 package controllers;
 
 
-import Interface.IloginClient;
+import interfaces.IloginClient;
 import models.User;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -32,9 +32,6 @@ public class LoginController{
         User user = client.login(tbUsername.getText(), tbPassword.getText());
         if (user != null) {
            showMenu(user);
-//            stage = (Stage) logInButton.getScene().getWindow();
-//            Parent root = FXMLLoader.load(getClass().getResource("/Menu.fxml"));
-//            switchStage(root, stage);
         }
 
 

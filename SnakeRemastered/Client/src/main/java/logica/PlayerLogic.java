@@ -1,23 +1,27 @@
 package logica;
 
 import enums.Direction;
-import Interface.IGameClient;
-import Interface.IPlayerLogic;
+import interfaces.IGameClient;
+import interfaces.IPlayerLogic;
 import models.Player;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import sample.Main;
 
 import java.io.IOException;
 import java.util.Timer;
 import java.util.TimerTask;
 
 public class PlayerLogic implements IPlayerLogic {
+
+    private final Logger log = LoggerFactory.getLogger(Main.class);
     private Player player;
     private Timer timer;
     private TimerTask task;
     private IGameClient movement;
-    private boolean playerAlive = true;
-
-    private int movementspeed = 500;
     final private PlayerLogic playerInfo;
+    private boolean playerAlive = true;
+    private int movementspeed = 500;
 
 
     public PlayerLogic(int playernumber, IGameClient movement) {
@@ -53,7 +57,7 @@ public class PlayerLogic implements IPlayerLogic {
     public void startGame() {
         timer = new Timer();
 
-        CreateTimer();
+        createTimer();
     }
 
     @Override
@@ -65,7 +69,7 @@ public class PlayerLogic implements IPlayerLogic {
     public void setSpeed(int speed) {
         timer.purge();
         movementspeed = speed;
-        CreateTimer();
+        createTimer();
 
     }
 
@@ -108,7 +112,7 @@ public class PlayerLogic implements IPlayerLogic {
         return playerAlive;
     }
 
-    private void CreateTimer() {
+    private void createTimer() {
         if (task != null) {
             task.cancel();
             task = null;
@@ -121,7 +125,7 @@ public class PlayerLogic implements IPlayerLogic {
                         movement.move(playerInfo);
 
                 } catch (IOException e) {
-                    e.printStackTrace();
+                    log.info(e.getMessage());
                 }
             }
         };

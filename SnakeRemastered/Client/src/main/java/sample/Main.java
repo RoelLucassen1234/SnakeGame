@@ -3,28 +3,29 @@ package sample;
 import controllers.MenuController;
 import enums.GamePhase;
 import enums.TileObject;
-import Interface.IGridMain;
-import logica.GameClient;
-import models.Vertex;
+import interfaces.IGridMain;
 import javafx.application.Platform;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
-import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.stage.Stage;
+import logica.GameClient;
+import models.Vertex;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 
 public class Main implements IGridMain {
+
+    private final Logger log = LoggerFactory.getLogger(Main.class);
 
     int numCols;
     private GridPane grid;
@@ -49,7 +50,6 @@ public class Main implements IGridMain {
         numCols = 50;
         int numRows = 50;
 
-        ArrayList<String> input = new ArrayList<>();
         client = new GameClient(singleplayer, numCols, numRows, this, playernr);
 
 
@@ -72,12 +72,7 @@ public class Main implements IGridMain {
         primaryStage.setScene(scene);
 
 
-        scene.setOnKeyPressed(new EventHandler<KeyEvent>() {
-            @Override
-            public void handle(KeyEvent keyEvent) {
-                client.changePlayerDirection(keyEvent.getCode().toString());
-            }
-        });
+        scene.setOnKeyPressed(keyEvent -> client.changePlayerDirection(keyEvent.getCode().toString()));
 
 
         primaryStage.show();
@@ -104,15 +99,14 @@ public class Main implements IGridMain {
         cell.getChildren().clear();
         Circle circle;
 
-        if (client.getPhase() == GamePhase.PREPERATION) {
-            if (client.setSpawnPoint(id)) {
+        if (client.getPhase() == GamePhase.PREPERATION && (client.setSpawnPoint(id))) {
                 circle = new Circle(10, Color.GREEN);
                 circle.visibleProperty().bind(cellswitch);
                 cellswitch.set(!cellswitch.get());
                 cell.getChildren().add(circle);
                 cell.getStyleClass().add("cell");
 
-            }
+
         }
     }
 
@@ -139,35 +133,35 @@ public class Main implements IGridMain {
 
     private GridPane createGrid(BooleanProperty[][] switches) {
 
-        int numCols = switches.length;
+        int numcColumns = switches.length;
         int numRows = switches[0].length;
         int gridId = 0;
 
-        GridPane grid = new GridPane();
+        GridPane newGridPane = new GridPane();
 
-        for (int x = 0; x < numCols; x++) {
+        for (int x = 0; x < numcColumns; x++) {
             ColumnConstraints cc = new ColumnConstraints();
             cc.setFillWidth(true);
             cc.setHgrow(Priority.ALWAYS);
-            grid.getColumnConstraints().add(cc);
+            newGridPane.getColumnConstraints().add(cc);
         }
 
         for (int y = 0; y < numRows; y++) {
             RowConstraints rc = new RowConstraints();
             rc.setFillHeight(true);
             rc.setVgrow(Priority.ALWAYS);
-            grid.getRowConstraints().add(rc);
+            newGridPane.getRowConstraints().add(rc);
         }
 
         for (int y = 0; y < numRows; y++) {
 
-            for (int x = 0; x < numCols; x++) {
-                grid.add(createCell(switches[x][y], gridId), x, y);
+            for (int x = 0; x < numcColumns; x++) {
+                newGridPane.add(createCell(switches[x][y], gridId), x, y);
                 gridId++;
             }
         }
-        grid.getStyleClass().add("grid");
-        return grid;
+        newGridPane.getStyleClass().add("grid");
+        return newGridPane;
     }
 
     public void showPath(Vertex vertex, String color) {
@@ -176,7 +170,6 @@ public class Main implements IGridMain {
         int y = vertex.getIdNumber() - (x * numCols);
         for (Node node : grid.getChildren()) {
             if (GridPane.getColumnIndex(node) == y && GridPane.getRowIndex(node) == x) {
-                System.out.println(x + " " + y);
                 node.setStyle(backgroundColor + color);
                 break;
             }
@@ -207,7 +200,7 @@ public class Main implements IGridMain {
         }
     }
 
-    public void goBack() throws IOException {
+    public void goBack() {
 
         Platform.runLater(new Runnable() {
             @Override
@@ -219,7 +212,7 @@ public class Main implements IGridMain {
                 try {
                     root = fxmlLoader.load();
                 } catch (IOException e) {
-                    e.printStackTrace();
+                    log.info(e.getMessage());
                 }
                 MenuController controller = fxmlLoader.<MenuController>getController();
                 controller.setName(username, client.getPlayer().getPlayerNumber());

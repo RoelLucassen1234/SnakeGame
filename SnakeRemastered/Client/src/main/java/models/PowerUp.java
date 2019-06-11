@@ -1,7 +1,7 @@
 package models;
 
 import enums.PowerUpType;
-import Interface.Iplayer;
+import interfaces.Iplayer;
 import javafx.scene.image.Image;
 
 

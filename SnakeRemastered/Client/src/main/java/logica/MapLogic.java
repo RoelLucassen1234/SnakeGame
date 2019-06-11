@@ -95,8 +95,7 @@ public class MapLogic {
         return node.get(0);
     }
 
-    public List<Vertex> getAllNodesTouchedByPlayer(int Playernumber) {
-        System.out.println(Playernumber);
-        return nodes.stream().filter(vertex -> vertex.getTouchedBy() == Playernumber).collect(Collectors.toList());
+    public List<Vertex> getAllNodesTouchedByPlayer(int playerNumber) {
+        return nodes.stream().filter(vertex -> vertex.getTouchedBy() == playerNumber).collect(Collectors.toList());
     }
 }

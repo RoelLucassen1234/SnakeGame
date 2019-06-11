@@ -2,34 +2,32 @@ package logica;
 
 import enums.Direction;
 import enums.TileObject;
-import Interface.IGameClient;
-import Interface.Iplayer;
+import interfaces.IGameClient;
+import interfaces.Iplayer;
 import models.Edge;
 import models.Graph;
 import models.Player;
 import models.Vertex;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.util.*;
 
 public class AiLogic implements Iplayer {
 
+    private final Logger log = LoggerFactory.getLogger(AiLogic.class);
     final private int totalGrids;
     final private int column;
     final private AiLogic opponent;
     final static private String color = "ff0000";
-
     private Player player;
-
     private int movementSpeed = 200;
     private int destination;
-
     private IGameClient movement;
-
     private Timer timer;
-    private List<Vertex> nodes ;
+    private List<Vertex> nodes;
     private List<Edge> edges = new ArrayList<>();
-
     private boolean forwardGrid = false;
     private boolean backwardsGrid = false;
     private boolean belowGrid = false;
@@ -62,9 +60,9 @@ public class AiLogic implements Iplayer {
 
     @Override
     public void setDirection(Direction direction) {
-       if (direction != null) {
-           player.setDirection(direction);
-       }
+        if (direction != null) {
+            player.setDirection(direction);
+        }
     }
 
     @Override
@@ -174,7 +172,7 @@ public class AiLogic implements Iplayer {
 
         setEdges(this.column);
         graph = new Graph(this.nodes, this.edges);
-       DijkstraLogic dijstra = new DijkstraLogic(graph);
+        DijkstraLogic dijstra = new DijkstraLogic(graph);
         dijstra.execute(nodes.get(player.getCurrentPoint()));
         LinkedList<Vertex> path = dijstra.getPath(nodes.get(destination));
         edges.clear();
@@ -189,32 +187,32 @@ public class AiLogic implements Iplayer {
 
     public void startGame() {
         timer = new Timer();
-        timer.scheduleAtFixedRate(new TimerTask() {
+        timer.schedule(new TimerTask() {
             @Override
             public void run() {
 
 
-               if (movement != null)
-                destination = movement.getPlayer().getCurrentLocation();
+                if (movement != null)
+                    destination = movement.getPlayer().getCurrentLocation();
                 int destinationId = -1;
                 List<Vertex> vertexList = calculatePath();
-               if (vertexList != null)
+                if (vertexList != null)
 
-                        destinationId = vertexList.get(1).getIdNumber();
-                        if (player.getCurrentPoint() + 1 == destinationId) {
-                            player.setDirection(Direction.RIGHT);
-                        } else if (player.getCurrentPoint() - 1 == destinationId) {
-                            player.setDirection(Direction.LEFT);
-                        } else if (player.getCurrentPoint() - column == destinationId) {
-                            player.setDirection(Direction.UP);
-                        } else if (player.getCurrentPoint() + column == destinationId) {
-                            player.setDirection(Direction.DOWN);
-                        }
+                    destinationId = vertexList.get(1).getIdNumber();
+                if (player.getCurrentPoint() + 1 == destinationId) {
+                    player.setDirection(Direction.RIGHT);
+                } else if (player.getCurrentPoint() - 1 == destinationId) {
+                    player.setDirection(Direction.LEFT);
+                } else if (player.getCurrentPoint() - column == destinationId) {
+                    player.setDirection(Direction.UP);
+                } else if (player.getCurrentPoint() + column == destinationId) {
+                    player.setDirection(Direction.DOWN);
+                }
 
                 try {
                     movement.move(opponent);
                 } catch (IOException e) {
-                    e.printStackTrace();
+                  log.info(e.getMessage());
                 }
             }
 
@@ -252,8 +250,8 @@ public class AiLogic implements Iplayer {
     }
 
     @Override
-    public boolean isPlayerAlive() {
-        return isPlayerAlive();
+    public boolean isPlayerAlive() throws StackOverflowError {
+        return player.getLives() == 3;
     }
 
     public String getColor() {

@@ -1,6 +1,6 @@
 package controllers;
 
-import Interface.IScoreClient;
+import interfaces.IScoreClient;
 import models.PlayerScore;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;

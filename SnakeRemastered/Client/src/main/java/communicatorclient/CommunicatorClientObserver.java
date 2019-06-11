@@ -1,6 +1,6 @@
 package communicatorclient;
 
-import Interface.IGameClient;
+import interfaces.IGameClient;
 import models.Communicator;
 import models.CommunicatorMessage;
 import models.Position;
@@ -90,7 +90,7 @@ public class CommunicatorClientObserver implements Observer {
             game.receiveSeedCheck(seed);
         } else if (property.matches(properties[2])) {
             Position position = gson.fromJson(content, Position.class);
-            game.receivePosition(position.getPlayerNr(), position.getPosition());
+            game.receivePosition(position.getPlayerNr(), position.getPlayerPosition());
         } else if (property.matches(properties[3])) {
             int playerNr = gson.fromJson(content, Integer.class);
             game.receiveDeathCheck(playerNr);

@@ -58,7 +58,7 @@ public class Vertex {
                     powerUp = new SwitchBoost();
                     break;
                     default:
-                        System.out.println("WARNING");
+                        powerUp = new SpeedBoost();
                         break;
             }
         }

@@ -1,7 +1,7 @@
 package models;
 
 import enums.PowerUpType;
-import Interface.Iplayer;
+import interfaces.Iplayer;
 
 public class ReverseBoost extends PowerUp {
 
