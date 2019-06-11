@@ -1,7 +1,7 @@
 package controller;
 
-import Models.GameResult;
-import Models.PlayerScore;
+import models.GameResult;
+import models.PlayerScore;
 import restLogic.ScoreLogic;
 import restServer.RestResponseHelper;
 

@@ -1,7 +1,7 @@
 package restLogic;
 
 
-import Models.User;
+import models.User;
 import restData.UserDal;
 import restInterface.IUserDal;
 

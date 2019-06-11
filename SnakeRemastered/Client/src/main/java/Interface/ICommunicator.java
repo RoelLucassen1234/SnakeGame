@@ -5,11 +5,11 @@
  */
 package Interface;
 
-import Models.CommunicatorMessage;
+import models.CommunicatorMessage;
 
 /**
  * Interface of Communicator in order to 
- * 1) start and stop connection;
+ * 1) startGame and stop connection;
  * 2) register and unregister properties;
  * 3) subscribe to and unsubscribe from properties;
  * 4) update properties by sending a message all clients that are

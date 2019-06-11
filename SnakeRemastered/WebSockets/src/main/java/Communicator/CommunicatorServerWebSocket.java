@@ -1,7 +1,7 @@
 package Communicator;
 
-import Models.CommunicatorWebSocketMessage;
-import Models.CommunicatorWebSocketMessageOperation;
+import models.CommunicatorWebSocketMessage;
+import models.CommunicatorWebSocketMessageOperation;
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
 import org.slf4j.Logger;

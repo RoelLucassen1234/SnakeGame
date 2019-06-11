@@ -10,14 +10,14 @@ module Client {
     requires org.apache.httpcomponents.httpclient;
     requires org.apache.httpcomponents.httpcore;
 
-    exports Controllers;
-    exports Logic;
-    exports Enum;
+    exports controllers;
+    exports logica;
+    exports enums;
     exports Interface;
-    exports Models;
-    exports CommunicatorClient;
+    exports models;
+    exports communicatorclient;
     exports sample;
 
-    opens Controllers;
-    opens Models;
+    opens controllers;
+    opens models;
 }

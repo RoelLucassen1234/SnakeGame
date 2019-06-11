@@ -1,6 +1,6 @@
 package restData;
 
-import Models.User;
+import models.User;
 import restInterface.IUserDal;
 
 import java.sql.PreparedStatement;

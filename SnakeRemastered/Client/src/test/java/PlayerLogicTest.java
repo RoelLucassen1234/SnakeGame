@@ -1,7 +1,7 @@
-import Enum.Direction;
+import enums.Direction;
 import Interface.IGridMain;
 import Interface.IPlayerLogic;
-import Logic.GameClient;
+import logica.GameClient;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

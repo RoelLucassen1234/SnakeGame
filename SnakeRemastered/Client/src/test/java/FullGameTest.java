@@ -1,7 +1,7 @@
-import Logic.AiLogic;
-import Logic.GameClient;
-import Logic.MapLogic;
-import Enum.*;
+import logica.AiLogic;
+import logica.GameClient;
+import logica.MapLogic;
+import enums.*;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

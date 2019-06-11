@@ -1,6 +1,6 @@
 package Interface;
 
-import Models.User;
+import models.User;
 
 public interface IRESTRequests {
     User login(String username, String password);

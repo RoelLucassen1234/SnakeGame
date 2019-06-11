@@ -1,7 +1,7 @@
 package restLogic;
 
-import Models.GameResult;
-import Models.PlayerScore;
+import models.GameResult;
+import models.PlayerScore;
 import restData.ScoreDal;
 import restInterface.IScoreDal;
 

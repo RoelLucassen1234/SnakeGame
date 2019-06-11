@@ -1,7 +1,7 @@
 package restInterface;
 
-import Models.GameResult;
-import Models.PlayerScore;
+import models.GameResult;
+import models.PlayerScore;
 
 import java.util.List;
 

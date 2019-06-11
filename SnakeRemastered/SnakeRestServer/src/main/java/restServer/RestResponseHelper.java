@@ -1,8 +1,8 @@
 package restServer;
 
-import Models.PlayerScore;
-import Models.SnakeRestResponse;
-import Models.User;
+import models.PlayerScore;
+import models.SnakeRestResponse;
+import models.User;
 import com.google.gson.Gson;
 import controller.UserController;
 import org.slf4j.Logger;

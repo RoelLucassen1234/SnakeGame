@@ -1,8 +1,8 @@
-import Enum.Direction;
-import Logic.AiLogic;
-import Logic.GameClient;
-import Logic.MapLogic;
-import Models.Vertex;
+import enums.Direction;
+import logica.AiLogic;
+import logica.GameClient;
+import logica.MapLogic;
+import models.Vertex;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

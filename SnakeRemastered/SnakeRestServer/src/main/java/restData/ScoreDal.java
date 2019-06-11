@@ -1,7 +1,7 @@
 package restData;
 
-import Models.GameResult;
-import Models.PlayerScore;
+import models.GameResult;
+import models.PlayerScore;
 import restInterface.IScoreDal;
 
 import java.sql.PreparedStatement;
@@ -67,16 +67,30 @@ public class ScoreDal implements IScoreDal {
 
     public List<PlayerScore> getAllScoresFromUsers(){
         List<PlayerScore> retrievedScores = new ArrayList<>();
+      String statement;
+      PlayerScore retrievedScore;
+      List<Integer> userIds = new ArrayList<>();
         try {
             sqlConnector.open();
 
-            String statement = "select sum(win = 1) as wins, sum(win = 0) as losses , u.username as username FROM Score s INNER JOIN user u ON u.id = s.userId";
+            statement = "SELECT DISTINCT userid from score";
+
 
             ResultSet rs = sqlConnector.executeQuery(sqlConnector.getStatement(statement));
 
             while (rs.next()) {
-               PlayerScore player = new PlayerScore(rs.getInt("wins"),rs.getInt("losses"), rs.getString("username"));
-               retrievedScores.add(player);
+                userIds.add(rs.getInt("userid"));
+            }
+
+            for (Integer integer : userIds){
+                statement = "select sum(win = 1) as wins, sum(win = 0) as losses, u.username as username FROM Score s INNER JOIN user u ON u.id = s.userId where s.userid =" + integer;
+
+                rs = sqlConnector.executeQuery(sqlConnector.getStatement(statement));
+
+                while (rs.next()) {
+                    retrievedScore = new PlayerScore(rs.getInt("wins"),rs.getInt("losses"), rs.getString("username"));
+                    retrievedScores.add(retrievedScore);
+                }
             }
 
 

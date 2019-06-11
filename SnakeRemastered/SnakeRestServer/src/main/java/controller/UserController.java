@@ -1,7 +1,7 @@
 package controller;
 
 
-import Models.User;
+import models.User;
 import restLogic.UserLogic;
 import restServer.RestResponseHelper;
 

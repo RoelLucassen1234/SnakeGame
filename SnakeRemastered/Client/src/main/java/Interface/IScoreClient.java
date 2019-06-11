@@ -1,6 +1,6 @@
 package Interface;
 
-import Models.PlayerScore;
+import models.PlayerScore;
 
 import java.util.List;
 

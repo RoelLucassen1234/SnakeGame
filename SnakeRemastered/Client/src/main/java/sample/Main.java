@@ -1,12 +1,11 @@
 package sample;
 
-import Controllers.MenuController;
-import Enum.GamePhase;
-import Enum.TileObject;
+import controllers.MenuController;
+import enums.GamePhase;
+import enums.TileObject;
 import Interface.IGridMain;
-import Logic.GameClient;
-import Models.Vertex;
-import javafx.application.Application;
+import logica.GameClient;
+import models.Vertex;
 import javafx.application.Platform;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
@@ -25,7 +24,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Main extends Application implements IGridMain {
+public class Main implements IGridMain {
 
     int numCols;
     private GridPane grid;
@@ -44,8 +43,7 @@ public class Main extends Application implements IGridMain {
     }
 
 
-    @Override
-    public void start(Stage primaryStage) throws Exception {
+    public void startGame(Stage primaryStage) {
 
         stage = primaryStage;
         numCols = 50;
@@ -225,6 +223,7 @@ public class Main extends Application implements IGridMain {
                 }
                 MenuController controller = fxmlLoader.<MenuController>getController();
                 controller.setName(username, client.getPlayer().getPlayerNumber());
+                client = null;
                 Scene scene = new Scene(root);
                 stage.setScene(scene);
                 stage.show();
@@ -232,10 +231,5 @@ public class Main extends Application implements IGridMain {
             }
         });
 
-    }
-
-
-    public static void main(String[] args) {
-        launch(args);
     }
 }

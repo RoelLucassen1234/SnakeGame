@@ -1,6 +1,6 @@
 package Interface;
 
-import Models.Vertex;
+import models.Vertex;
 
 import java.io.IOException;
 import java.util.List;

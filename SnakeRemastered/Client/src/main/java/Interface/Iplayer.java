@@ -1,6 +1,6 @@
 package Interface;
 
-import Enum.Direction;
+import enums.Direction;
 
 public interface Iplayer {
 
@@ -14,5 +14,7 @@ public interface Iplayer {
    int getPlayerNumber();
    void playerDies();
     int getMovementSpeed();
+
+   boolean isPlayerAlive();
 
 }
