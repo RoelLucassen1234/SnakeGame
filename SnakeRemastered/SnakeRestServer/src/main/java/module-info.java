@@ -9,6 +9,6 @@ module SnakeRestServer {
     requires java.sql;
     requires Client;
 
-    opens restServer;
+    opens restserver;
     opens controller;
 }

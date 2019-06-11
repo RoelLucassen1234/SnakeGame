@@ -1,9 +1,9 @@
 package controller;
 
 
-import Models.User;
-import restLogic.UserLogic;
-import restServer.RestResponseHelper;
+import models.User;
+import restlogica.UserLogic;
+import restserver.RestResponseHelper;
 
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
@@ -20,7 +20,7 @@ public class UserController {
     @Produces(MediaType.APPLICATION_JSON)
     public Response registerUser(User user) {
 
-        System.out.println("[Server postUser]");
+
         if (userLogic.register(user.getUsername(),user.getPassword())) {
             return Response.status(200).entity(RestResponseHelper.getSuccessResponse(true)).build();
         } else {
@@ -33,7 +33,7 @@ public class UserController {
     @Produces(MediaType.APPLICATION_JSON)
     public Response Login(User user) {
 
-        System.out.println("[Server getUser]");
+
         User newUser = userLogic.login(user.getUsername(), user.getPassword());
         if (newUser != null){
             return Response.status(200).entity(RestResponseHelper.getUser(newUser)).build();
@@ -42,10 +42,4 @@ public class UserController {
         }
 
     }
-
-//    @GetMapping("/factor/{userId}")
-////    public ResponseEntity get2FactorKey(@PathVariable String userId) {
-////    }
-
-
 }

@@ -1,6 +1,6 @@
-import Enum.TileObject;
-import Logic.MapLogic;
-import Models.Vertex;
+import enums.TileObject;
+import logica.MapLogic;
+import models.Vertex;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

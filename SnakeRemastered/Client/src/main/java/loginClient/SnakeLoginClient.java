@@ -1,12 +1,12 @@
 package loginClient;
 
-import Interface.IRESTRequests;
-import Interface.IScoreClient;
-import Interface.IloginClient;
-import Models.GameResult;
-import Models.PlayerScore;
-import Models.SnakeRestResponse;
-import Models.User;
+import interfaces.IRESTRequests;
+import interfaces.IScoreClient;
+import interfaces.IloginClient;
+import models.GameResult;
+import models.PlayerScore;
+import models.SnakeRestResponse;
+import models.User;
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
 import org.apache.http.HttpEntity;
